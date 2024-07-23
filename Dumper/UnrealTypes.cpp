@@ -6,6 +6,8 @@
 
 std::wstring MakeNameValid(std::wstring&& Name)
 {
+	return Name;
+
 	static constexpr const wchar_t* Numbers[10] =
 	{
 		L"Zero",
@@ -90,7 +92,7 @@ void FName::Init(bool bForceGNames)
 		"48 8D ? ? ? 48 8B ? E8",
 	};
 
-	MemAddress StringRef = FindByStringInAllSections(L"ForwardShadingQuality_");
+	MemAddress StringRef = FindByStringInAllSections("ForwardShadingQuality_");
 
 	int i = 0;
 	while (!AppendString && i < PossibleSigs.size())
