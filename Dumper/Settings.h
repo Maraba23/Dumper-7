@@ -7,36 +7,36 @@ namespace Settings
 	namespace Generator
 	{
 		//Auto generated if no override is provided
-		inline std::string GameName = "";
-		inline std::string GameVersion = "";
+		inline std::wstring GameName = L"";
+		inline std::wstring GameVersion = L"";
 
-		inline constexpr const char* SDKGenerationPath = "C:/Dumper-7";
+		inline constexpr const wchar_t* SDKGenerationPath = L"C:/Dumper-7";
 	}
 
 	namespace CppGenerator
 	{
-		/* No prefix for files->FilePrefix = "" */
-		constexpr const char* FilePrefix = "";
+		/* No prefix for files->FilePrefix = L"" */
+		constexpr const wchar_t* FilePrefix = L"";
 
 		/* No seperate namespace for SDK -> SDKNamespaceName = nullptr */
-		constexpr const char* SDKNamespaceName = "SDK";
+		constexpr const wchar_t* SDKNamespaceName = L"SDK";
 
 		/* No seperate namespace for Params -> ParamNamespaceName = nullptr */
-		constexpr const char* ParamNamespaceName = "Params";
+		constexpr const wchar_t* ParamNamespaceName = L"Params";
 
 		/* Feature is currently not supported/not working. */
 		/* Do not XOR strings -> XORString = nullptr. Custom XorStr implementations differing from https://github.com/JustasMasiulis/xorstr may require changes to the struct 'StringLiteral' in CppGenerator.cpp.  */
-		constexpr const char* XORString = nullptr;
+		constexpr const wchar_t* XORString = nullptr;
 
 		/* Customizable part of Cpp code to allow for a custom 'uintptr_t InSDKUtils::GetImageBase()' function */
-		constexpr const char* GetImageBaseFuncBody = 
-R"(	{
+		constexpr const wchar_t* GetImageBaseFuncBody = 
+LR"(	{
 		return reinterpret_cast<uintptr_t>(GetModuleHandle(0));
 	}
 )";
 		/* Customizable part of Cpp code to allow for a custom 'InSDKUtils::CallGameFunction' function */
-		constexpr const char* CallGameFunction =
-R"(
+		constexpr const wchar_t* CallGameFunction =
+LR"(
 	template<typename FuncType, typename... ParamTypes>
 	requires std::invocable<FuncType, ParamTypes...>
 	inline auto CallGameFunction(FuncType Function, ParamTypes&&... Args)

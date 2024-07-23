@@ -39,9 +39,9 @@ bool NameInfo::HasCollisions() const
 	return false;
 }
 
-std::string NameInfo::DebugStringify() const
+std::wstring NameInfo::DebugStringify() const
 {
-	return std::format(R"(
+	return std::format(LR"(
 OwnType: {};
 MemberNameCollisionCount: {};
 SuperMemberNameCollisionCount: {};
@@ -176,7 +176,7 @@ uint64 CollisionManager::AddNameToContainer(NameContainer& StructNames, UEStruct
 	}
 }
 
-void CollisionManager::AddReservedName(const std::string& Name, bool bIsParameterOrLocalVariable)
+void CollisionManager::AddReservedName(const std::wstring& Name, bool bIsParameterOrLocalVariable)
 {
 	NameInfo NewInfo;
 	NewInfo.Name = MemberNames.FindOrAdd(Name).first;
@@ -206,7 +206,7 @@ void CollisionManager::AddStructToNameContainer(UEStruct Struct, bool bShouldChe
 		const auto [It, bInserted] = TranslationMap.emplace(KeyFunctions::GetKeyForCollisionInfo(Struct, Member), Index);
 		
 		if (!bInserted)
-			std::cout << "Error, no insertion took place, key {0x" << std::hex << KeyFunctions::GetKeyForCollisionInfo(Struct, Member) << "} duplicated!" << std::endl;
+			std::wcout << L"Error, no insertion took place, key {0x" << std::hex << KeyFunctions::GetKeyForCollisionInfo(Struct, Member) << L"} duplicated!" << std::endl;
 	};
 
 	for (UEProperty Prop : Struct.GetProperties())
@@ -221,46 +221,46 @@ void CollisionManager::AddStructToNameContainer(UEStruct Struct, bool bShouldChe
 	}
 };
 
-std::string CollisionManager::StringifyName(UEStruct Struct, NameInfo Info)
+std::wstring CollisionManager::StringifyName(UEStruct Struct, NameInfo Info)
 {
 	ECollisionType OwnCollisionType = static_cast<ECollisionType>(Info.OwnType);
 
-	std::string Name = MemberNames.GetStringEntry(Info.Name).GetName();
+	std::wstring Name = MemberNames.GetStringEntry(Info.Name).GetWideName();
 
-	//std::cout << "Nm: " << Name << "\nInfo:" << Info.DebugStringify() << "\n";
+	//std::wcout << L"Nm: L" << Name << L"\nInfo:" << Info.DebugStringify() << L"\n";
 
 	// Order of sub-if-statements matters
 	if (OwnCollisionType == ECollisionType::MemberName)
 	{
 		if (Info.SuperMemberNameCollisionCount > 0x0)
 		{
-			Name += ("_" + Struct.GetValidName());
+			Name += (L"_" + Struct.GetValidName());
 		}
 		if (Info.MemberNameCollisionCount > 0x0)
 		{
-			Name += ("_" + std::to_string(Info.MemberNameCollisionCount - 1));
+			Name += (L"_" + std::to_wstring(Info.MemberNameCollisionCount - 1));
 		}
 	}
 	else if (OwnCollisionType == ECollisionType::FunctionName)
 	{
 		if (Info.MemberNameCollisionCount > 0x0 || Info.SuperMemberNameCollisionCount > 0x0)
 		{
-			Name = ("Func_" + Name);
+			Name = (L"Func_" + Name);
 		}
 		if (Info.FunctionNameCollisionCount > 0x0)
 		{
-			Name += ("_" + std::to_string(Info.FunctionNameCollisionCount - 1));
+			Name += (L"_" + std::to_wstring(Info.FunctionNameCollisionCount - 1));
 		}
 	}
 	else if (OwnCollisionType == ECollisionType::ParameterName)
 	{
 		if (Info.MemberNameCollisionCount > 0x0 || Info.SuperMemberNameCollisionCount > 0x0 || Info.FunctionNameCollisionCount > 0x0 || Info.SuperFuncNameCollisionCount > 0x0)
 		{
-			Name = ("Param_" + Name);
+			Name = (L"Param_" + Name);
 		}
 		if (Info.ParamNameCollisionCount > 0x0)
 		{
-			Name += ("_" + std::to_string(Info.ParamNameCollisionCount - 1));
+			Name += (L"_" + std::to_wstring(Info.ParamNameCollisionCount - 1));
 		}
 	}
 

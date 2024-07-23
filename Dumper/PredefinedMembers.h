@@ -8,10 +8,10 @@
 
 struct PredefinedMember
 {
-    std::string Comment;
+    std::wstring Comment;
 
-    std::string Type;
-    std::string Name;
+    std::wstring Type;
+    std::wstring Name;
 
     int32 Offset;
     int32 Size;
@@ -25,18 +25,18 @@ struct PredefinedMember
     uint8 BitIndex;
     uint8 BitCount = 0x1;
 
-    std::string DefaultValue = std::string();
+    std::wstring DefaultValue = std::wstring();
 };
 
 struct PredefinedFunction
 {
-    std::string CustomComment;
-    std::string CustomTemplateText = std::string();
-    std::string ReturnType;
-    std::string NameWithParams;
-    std::string NameWithParamsWithoutDefaults = std::string();
+    std::wstring CustomComment;
+    std::wstring CustomTemplateText = std::wstring();
+    std::wstring ReturnType;
+    std::wstring NameWithParams;
+    std::wstring NameWithParamsWithoutDefaults = std::wstring();
 
-    std::string Body;
+    std::wstring Body;
 
     bool bIsStatic;
     bool bIsConst;
@@ -51,8 +51,8 @@ struct PredefinedElements
 
 struct PredefinedStruct
 {
-    std::string CustomTemplateText = std::string();
-    std::string UniqueName;
+    std::wstring CustomTemplateText = std::wstring();
+    std::wstring UniqueName;
     int32 Size;
     int32 Alignment;
     bool bUseExplictAlignment;

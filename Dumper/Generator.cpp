@@ -8,22 +8,22 @@
 
 inline void InitWeakObjectPtrSettings()
 {
-	UEStruct LoadAsset = ObjectArray::FindObjectFast<UEFunction>("LoadAsset", EClassCastFlags::Function);
+	UEStruct LoadAsset = ObjectArray::FindObjectFast<UEFunction>(L"LoadAsset", EClassCastFlags::Function);
 
 	if (!LoadAsset)
 	{
-		std::cout << "\nDumper-7: 'LoadAsset' wasn't found, could not determine value for 'bIsWeakObjectPtrWithoutTag'!\n" << std::endl;
+		std::wcout << L"\nDumper-7: 'LoadAsset' wasn't found, could not determine value for 'bIsWeakObjectPtrWithoutTag'!\n" << std::endl;
 		return;
 	}
 
-	UEProperty Asset = LoadAsset.FindMember("Asset", EClassCastFlags::SoftObjectProperty);
+	UEProperty Asset = LoadAsset.FindMember(L"Asset", EClassCastFlags::SoftObjectProperty);
 	if (!Asset)
 	{
-		std::cout << "\nDumper-7: 'Asset' wasn't found, could not determine value for 'bIsWeakObjectPtrWithoutTag'!\n" << std::endl;
+		std::wcout << L"\nDumper-7: 'Asset' wasn't found, could not determine value for 'bIsWeakObjectPtrWithoutTag'!\n" << std::endl;
 		return;
 	}
 
-	UEStruct SoftObjectPath = ObjectArray::FindObjectFast<UEStruct>("SoftObjectPath");
+	UEStruct SoftObjectPath = ObjectArray::FindObjectFast<UEStruct>(L"SoftObjectPath");
 
 	constexpr int32 SizeOfFFWeakObjectPtr = 0x08;
 	constexpr int32 OldUnrealAssetPtrSize = 0x10;
@@ -31,31 +31,31 @@ inline void InitWeakObjectPtrSettings()
 
 	Settings::Internal::bIsWeakObjectPtrWithoutTag = Asset.GetSize() <= (SizeOfSoftObjectPath + SizeOfFFWeakObjectPtr);
 
-	//std::cout << std::format("\nDumper-7: bIsWeakObjectPtrWithoutTag = {}\n", Settings::Internal::bIsWeakObjectPtrWithoutTag) << std::endl;
+	//std::wcout << std::format(L"\nDumper-7: bIsWeakObjectPtrWithoutTag = {}\n", Settings::Internal::bIsWeakObjectPtrWithoutTag) << std::endl;
 }
 
 inline void InitLargeWorldCoordinateSettings()
 {
-	UEStruct FVectorStruct = ObjectArray::FindObjectFast<UEStruct>("Vector", EClassCastFlags::Struct);
+	UEStruct FVectorStruct = ObjectArray::FindObjectFast<UEStruct>(L"Vector", EClassCastFlags::Struct);
 
 	if (!FVectorStruct) [[unlikely]]
 	{
-		std::cout << "\nSomething went horribly wrong, FVector wasn't even found!\n\n" << std::endl;
+		std::wcout << L"\nSomething went horribly wrong, FVector wasn't even found!\n\n" << std::endl;
 		return;
 	}
 
-	UEProperty XProperty = FVectorStruct.FindMember("X");
+	UEProperty XProperty = FVectorStruct.FindMember(L"X");
 
 	if (!XProperty) [[unlikely]]
 	{
-		std::cout << "\nSomething went horribly wrong, FVector::X wasn't even found!\n\n" << std::endl;
+		std::wcout << L"\nSomething went horribly wrong, FVector::X wasn't even found!\n\n" << std::endl;
 		return;
 	}
 
 	/* Check the underlaying type of FVector::X. If it's double we're on UE5.0, or higher, and using large world coordinates. */
 	Settings::Internal::bUseLargeWorldCoordinates = XProperty.IsA(EClassCastFlags::DoubleProperty);
 
-	//std::cout << std::format("\nDumper-7: bUseLargeWorldCoordinates = {}\n", Settings::Internal::bUseLargeWorldCoordinates) << std::endl;
+	//std::wcout << std::format(L"\nDumper-7: bUseLargeWorldCoordinates = {}\n", Settings::Internal::bUseLargeWorldCoordinates) << std::endl;
 }
 
 inline void InitSettings()
@@ -114,7 +114,7 @@ bool Generator::SetupDumperFolder()
 {
 	try
 	{
-		std::string FolderName = (Settings::Generator::GameVersion + '-' + Settings::Generator::GameName);
+		std::wstring FolderName = (Settings::Generator::GameVersion + L'-' + Settings::Generator::GameName);
 
 		FileNameHelper::MakeValidFileName(FolderName);
 
@@ -122,7 +122,7 @@ bool Generator::SetupDumperFolder()
 
 		if (fs::exists(DumperFolder))
 		{
-			fs::path Old = DumperFolder.generic_string() + "_OLD";
+			fs::path Old = DumperFolder.wstring() + L"_OLD";
 
 			fs::remove_all(Old);
 
@@ -133,22 +133,22 @@ bool Generator::SetupDumperFolder()
 	}
 	catch (const std::filesystem::filesystem_error& fe)
 	{
-		std::cout << "Could not create required folders! Info: \n";
-		std::cout << fe.what() << std::endl;
+		std::wcout << L"Could not create required folders! Info: \n";
+		std::wcout << fe.what() << std::endl;
 		return false;
 	}
 
 	return true;
 }
 
-bool Generator::SetupFolders(std::string& FolderName, fs::path& OutFolder)
+bool Generator::SetupFolders(std::wstring& FolderName, fs::path& OutFolder)
 {
 	fs::path Dummy;
-	std::string EmptyName = "";
+	std::wstring EmptyName = L"";
 	return SetupFolders(FolderName, OutFolder, EmptyName, Dummy);
 }
 
-bool Generator::SetupFolders(std::string& FolderName, fs::path& OutFolder, std::string& SubfolderName, fs::path& OutSubFolder)
+bool Generator::SetupFolders(std::wstring& FolderName, fs::path& OutFolder, std::wstring& SubfolderName, fs::path& OutSubFolder)
 {
 	FileNameHelper::MakeValidFileName(FolderName);
 	FileNameHelper::MakeValidFileName(SubfolderName);
@@ -160,7 +160,7 @@ bool Generator::SetupFolders(std::string& FolderName, fs::path& OutFolder, std::
 				
 		if (fs::exists(OutFolder))
 		{
-			fs::path Old = OutFolder.generic_string() + "_OLD";
+			fs::path Old = OutFolder.wstring() + L"_OLD";
 
 			fs::remove_all(Old);
 
@@ -174,8 +174,8 @@ bool Generator::SetupFolders(std::string& FolderName, fs::path& OutFolder, std::
 	}
 	catch (const std::filesystem::filesystem_error& fe)
 	{
-		std::cout << "Could not create required folders! Info: \n";
-		std::cout << fe.what() << std::endl;
+		std::wcout << L"Could not create required folders! Info: \n";
+		std::wcout << fe.what() << std::endl;
 		return false;
 	}
 

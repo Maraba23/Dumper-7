@@ -15,32 +15,32 @@ private:
     friend class Generator;
 
 private:
-    using StreamType = std::ofstream;
+    using StreamType = std::wofstream;
 
 public:
     static inline PredefinedMemberLookupMapType PredefinedMembers;
 
-    static inline std::string MainFolderName = "Dumpspace";
-    static inline std::string SubfolderName = "";
+    static inline std::wstring MainFolderName = L"Dumpspace";
+    static inline std::wstring SubfolderName = L"";
 
     static inline fs::path MainFolder;
     static inline fs::path Subfolder;
 
 private:
-    static std::string GetStructPrefixedName(const StructWrapper& Struct);
-    static std::string GetEnumPrefixedName(const EnumWrapper& Enum);
+    static std::wstring GetStructPrefixedName(const StructWrapper& Struct);
+    static std::wstring GetEnumPrefixedName(const EnumWrapper& Enum);
 
 private:
-    static std::string EnumSizeToType(const int32 Size);
+    static std::wstring EnumSizeToType(const int32 Size);
 
 private:
     static DSGen::EType GetMemberEType(const PropertyWrapper& Property);
     static DSGen::EType GetMemberEType(UEProperty Property);
-    static std::string GetMemberTypeStr(UEProperty Property, std::string& OutExtendedType, std::vector<DSGen::MemberType>& OutSubtypes);
+    static std::wstring GetMemberTypeStr(UEProperty Property, std::string& OutExtendedType, std::vector<DSGen::MemberType>& OutSubtypes);
     static DSGen::MemberType GetMemberType(const StructWrapper& Struct);
     static DSGen::MemberType GetMemberType(UEProperty Property, bool bIsReference = false);
     static DSGen::MemberType GetMemberType(const PropertyWrapper& Property, bool bIsReference = false);
-    static DSGen::MemberType ManualCreateMemberType(DSGen::EType Type, const std::string& TypeName, const std::string& ExtendedType = "");
+    static DSGen::MemberType ManualCreateMemberType(DSGen::EType Type, const std::wstring& TypeName, const std::wstring& ExtendedType = L"");
     static void AddMemberToStruct(DSGen::ClassHolder& Struct, const PropertyWrapper& Property);
 
     static void RecursiveGetSuperClasses(const StructWrapper& Struct, std::vector<std::string>& OutSupers);

@@ -29,24 +29,24 @@ int32 PackageInfoHandle::GetIndex() const
 	return Info->PackageIndex;
 }
 
-std::string PackageInfoHandle::GetName() const
+std::wstring PackageInfoHandle::GetName() const
 {
 	const StringEntry& Name = GetNameEntry();
 
 	if (Info->CollisionCount <= 0) [[likely]]
-		return Name.GetName();
+		return Name.GetWideName();
 
-	return Name.GetName() + "_" + std::to_string(Info->CollisionCount - 1);
+	return Name.GetWideName() + L"_" + std::to_wstring(Info->CollisionCount - 1);
 }
 
-std::pair<std::string, uint8> PackageInfoHandle::GetNameCollisionPair() const
+std::pair<std::wstring, uint8> PackageInfoHandle::GetNameCollisionPair() const
 {
 	const StringEntry& Name = GetNameEntry();
 
 	if (Name.IsUniqueInTable()) [[likely]]
-		return { Name.GetName(), 0 };
+		return { Name.GetWideName(), 0 };
 
-	return { Name.GetName(), Info->CollisionCount };
+	return { Name.GetWideName(), Info->CollisionCount };
 }
 
 bool PackageInfoHandle::HasClasses() const
@@ -329,7 +329,7 @@ void PackageManager::InitNames()
 {
 	for (auto& [PackageIdx, Info] : PackageInfos)
 	{
-		std::string PackageName = ObjectArray::GetByIndex(PackageIdx).GetValidName();
+		std::wstring PackageName = ObjectArray::GetByIndex(PackageIdx).GetValidName();
 
 		auto [Name, bWasInserted] = UniquePackageNameTable.FindOrAdd(PackageName);
 		Info.Name = Name;

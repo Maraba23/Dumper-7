@@ -118,9 +118,6 @@
     <Filter Include="Utils\Json">
       <UniqueIdentifier>{34aabb03-f73e-4107-b4ee-e7afa15b111d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Tests">
-      <UniqueIdentifier>{ae8563d1-816c-4218-9877-a95f062ca4ff}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ObjectArray.h">
@@ -149,27 +146,6 @@
     </ClInclude>
     <ClInclude Include="HashStringTable.h">
       <Filter>GeneratorRewrite\Public</Filter>
-    </ClInclude>
-    <ClInclude Include="HashStringTableTest.h">
-      <Filter>Tests</Filter>
-    </ClInclude>
-    <ClInclude Include="GeneratorTest.h">
-      <Filter>Tests</Filter>
-    </ClInclude>
-    <ClInclude Include="StructManagerTest.h">
-      <Filter>Tests</Filter>
-    </ClInclude>
-    <ClInclude Include="CollisionManagerTest.h">
-      <Filter>Tests</Filter>
-    </ClInclude>
-    <ClInclude Include="MemberManagerTest.h">
-      <Filter>Tests</Filter>
-    </ClInclude>
-    <ClInclude Include="TestBase.h">
-      <Filter>Tests</Filter>
-    </ClInclude>
-    <ClInclude Include="EnumManagerTest.h">
-      <Filter>Tests</Filter>
     </ClInclude>
     <ClInclude Include="CollisionManager.h">
       <Filter>GeneratorRewrite\Public\Managers</Filter>
@@ -203,12 +179,6 @@
     </ClInclude>
     <ClInclude Include="Generator.h">
       <Filter>GeneratorRewrite\Public\Generators</Filter>
-    </ClInclude>
-    <ClInclude Include="PackageManagerTest.h">
-      <Filter>Tests</Filter>
-    </ClInclude>
-    <ClInclude Include="CppGeneratorTest.h">
-      <Filter>Tests</Filter>
     </ClInclude>
     <ClInclude Include="Settings.h">
       <Filter>GeneratorRewrite</Filter>

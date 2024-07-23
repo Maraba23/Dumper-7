@@ -14,11 +14,11 @@ public:
     UEEnum GetUnrealEnum() const;
 
 public:
-    std::string GetName() const;
-    std::string GetRawName() const;
-    std::string GetFullName() const;
+    std::wstring GetName() const;
+    std::wstring GetRawName() const;
+    std::wstring GetFullName() const;
 
-    std::pair<std::string, bool> GetUniqueName() const;
+    std::pair<std::wstring, bool> GetUniqueName() const;
     uint8 GetUnderlyingTypeSize() const;
 
     int32 GetNumMembers() const;

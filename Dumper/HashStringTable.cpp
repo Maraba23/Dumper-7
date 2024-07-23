@@ -77,7 +77,7 @@ void HashStringTable::ResizeBucket(StringBucket& Bucket)
 template<typename CharType>
 std::pair<HashStringTableIndex, bool> HashStringTable::AddUnchecked(const CharType* Str, int32 Length, uint8 Hash)
 {
-    static_assert(std::is_same_v<CharType, char> || std::is_same_v<CharType, wchar_t>, "Invalid CharType! Type must be 'char' or 'wchar_t'.");
+    static_assert(std::is_same_v<CharType, char> || std::is_same_v<CharType, wchar_t>, L"Invalid CharType! Type must be 'char' or 'wchar_t'.");
 
     const int32 LengthBytes = Length * sizeof(CharType);
 
@@ -163,17 +163,13 @@ HashStringTableIndex HashStringTable::Find(const CharType* Str, int32 Length, ui
 template<typename CharType>
 inline std::pair<HashStringTableIndex, bool> HashStringTable::FindOrAdd(const CharType* Str, int32 Length, bool bShouldMarkAsDuplicated)
 {
-    constexpr bool bIsWChar = std::is_same_v<CharType, wchar_t>;
-
-    static_assert(!bIsWChar, "'wchar_t' is not supported by the hashing function yet!");
-
     if (!Str || Length <= 0 || Length > StringEntry::MaxStringLength)
     {
-        std::cout << std::format("Error on line {{{:d}}}: {}\n", __LINE__, !Str ? "!Str" : Length <= 0 ? "Length <= 0" : "Length > MaxStringLength") << std::endl;
+        std::wcout << std::format(L"Error on line {{{:d}}}: {}\n", __LINE__, !Str ? L"!Str" : Length <= 0 ? L"Length <= 0" : L"Length > MaxStringLength") << std::endl;
         return { HashStringTableIndex(-1), false };
     }
 
-    uint8 Hash = SmallPearsonHash(Str);
+    const uint8 Hash = SmallPearsonHash(Str);
 
     HashStringTableIndex ExistingIndex = Find(Str, Length, Hash);
 
@@ -196,7 +192,7 @@ inline std::pair<HashStringTableIndex, bool> HashStringTable::FindOrAdd(const Ch
 }
 
 /* returns pair<Index, bWasAdded> */
-std::pair<HashStringTableIndex, bool> HashStringTable::FindOrAdd(const std::string& String, bool bShouldMarkAsDuplicated)
+std::pair<HashStringTableIndex, bool> HashStringTable::FindOrAdd(const std::wstring& String, bool bShouldMarkAsDuplicated)
 {
     return FindOrAdd(String.c_str(), String.size(), bShouldMarkAsDuplicated);
 }
@@ -227,15 +223,15 @@ void HashStringTable::DebugPrintStats() const
         TotalMemoryUsed += Bucket.Size;
         TotalMemoryAllocated += Bucket.SizeMax;
 
-        std::cout << std::format("Bucket[{:02d}] = {{ Data = {:p}, Size = {:05X}, SizeMax = {:05X} }}\n", i, static_cast<void*>(Bucket.Data), Bucket.Size, Bucket.SizeMax);
+        std::wcout << std::format(L"Bucket[{:02d}] = {{ Data = {:p}, Size = {:05X}, SizeMax = {:05X} }}\n", i, static_cast<void*>(Bucket.Data), Bucket.Size, Bucket.SizeMax);
     }
 
-    std::cout << std::endl;
+    std::wcout << std::endl;
 
-    std::cout << std::format("TotalMemoryUsed: {:X}\n", TotalMemoryUsed);
-    std::cout << std::format("TotalMemoryAllocated: {:X}\n", TotalMemoryAllocated);
-    std::cout << std::format("Percentage of allocation in use: {:.3f}\n", static_cast<double>(TotalMemoryUsed) / TotalMemoryAllocated);
+    std::wcout << std::format(L"TotalMemoryUsed: {:X}\n", TotalMemoryUsed);
+    std::wcout << std::format(L"TotalMemoryAllocated: {:X}\n", TotalMemoryAllocated);
+    std::wcout << std::format(L"Percentage of allocation in use: {:.3f}\n", static_cast<double>(TotalMemoryUsed) / TotalMemoryAllocated);
 
-    std::cout << "\n" << std::endl;
+    std::wcout << L"\n" << std::endl;
 }
 

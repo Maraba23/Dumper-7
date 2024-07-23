@@ -12,30 +12,30 @@ enum class ECollisionType : uint8
 	None,
 };
 
-inline std::string StringifyCollisionType(ECollisionType Type)
+inline std::wstring StringifyCollisionType(ECollisionType Type)
 {
 	switch (Type)
 	{
 	case ECollisionType::MemberName:
-		return "ECollisionType::MemberName";
+		return L"ECollisionType::MemberName";
 		break;
 	case ECollisionType::SuperMemberName:
-		return "ECollisionType::SuperMemberName";
+		return L"ECollisionType::SuperMemberName";
 		break;
 	case ECollisionType::FunctionName:
-		return "ECollisionType::FunctionName";
+		return L"ECollisionType::FunctionName";
 		break;
 	case ECollisionType::SuperFunctionName:
-		return "ECollisionType::SuperFunctionName";
+		return L"ECollisionType::SuperFunctionName";
 		break;
 	case ECollisionType::ParameterName:
-		return "ECollisionType::ParameterName";
+		return L"ECollisionType::ParameterName";
 		break;
 	case ECollisionType::None:
-		return "ECollisionType::None";
+		return L"ECollisionType::None";
 		break;
 	default:
-		return "ECollisionType::Invalid";
+		return L"ECollisionType::Invalid";
 		break;
 	}
 }
@@ -65,7 +65,7 @@ public:
 		uint32 CollisionData;
 	};
 
-	static_assert(sizeof(CollisionData) >= (OwnTypeBitCount + (5 * PerCountBitCount)) / 32, "Too many bits to fit into uint32, recude the number of bits!");
+	static_assert(sizeof(CollisionData) >= (OwnTypeBitCount + (5 * PerCountBitCount)) / 32, L"Too many bits to fit into uint32, recude the number of bits!");
 
 public:
 	inline NameInfo()
@@ -87,7 +87,7 @@ public:
 	}
 
 public:
-	std::string DebugStringify() const;
+	std::wstring DebugStringify() const;
 };
 
 namespace KeyFunctions
@@ -119,7 +119,7 @@ private:
 	/* Map to translation from UEProperty/UEFunction to Index in NameContainer */
 	CollisionManager::TranslationMapType TranslationMap;
 
-	/* Names reserved for predefined members or local variables in function-bodies. Eg. "Class", "Parms", etc. */
+	/* Names reserved for predefined members or local variables in function-bodies. Eg. "Class", L"Parms", etc. */
 	NameContainer ReservedNames;
 
 private:
@@ -128,10 +128,10 @@ private:
 
 public:
 	/* For external use by 'MemberManager::InitReservedNames()' */
-	void AddReservedName(const std::string& Name, bool bIsParameterOrLocalVariable);
+	void AddReservedName(const std::wstring& Name, bool bIsParameterOrLocalVariable);
 	void AddStructToNameContainer(UEStruct ObjAsStruct, bool bShouldCheckReservedNames);
 
-	std::string StringifyName(UEStruct Struct, NameInfo Info);
+	std::wstring StringifyName(UEStruct Struct, NameInfo Info);
 
 public:
 	template<typename UEType>

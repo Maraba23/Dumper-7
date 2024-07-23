@@ -10,30 +10,30 @@ class IDAMappingGenerator
 public:
     static inline PredefinedMemberLookupMapType PredefinedMembers;
 
-    static inline std::string MainFolderName = "IDAMappings";
-    static inline std::string SubfolderName = "";
+    static inline std::wstring MainFolderName = L"IDAMappings";
+    static inline std::wstring SubfolderName = L"";
 
     static inline fs::path MainFolder;
     static inline fs::path Subfolder;
 
 private:
-    using StreamType = std::ofstream;
+    using StreamType = std::wofstream;
 
 private:
     template<typename InStreamType, typename T>
     static void WriteToStream(InStreamType& InStream, T Value)
     {
-        InStream.write(reinterpret_cast<const char*>(&Value), sizeof(T));
+        InStream.write(reinterpret_cast<const wchar_t*>(&Value), sizeof(T));
     }
 
     template<typename InStreamType, typename T>
     static void WriteToStream(InStreamType& InStream, T* Value, int32 Size)
     {
-        InStream.write(reinterpret_cast<const char*>(Value), Size);
+        InStream.write(reinterpret_cast<const wchar_t*>(Value), Size);
     }
 
 private:
-    static std::string MangleFunctionName(const std::string& ClassName, const std::string& FunctionName);
+    static std::wstring MangleFunctionName(const std::wstring& ClassName, const std::wstring& FunctionName);
 
 private:
     static void WriteReadMe(StreamType& ReadMe);

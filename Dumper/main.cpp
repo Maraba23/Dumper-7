@@ -31,7 +31,7 @@ DWORD MainThread(HMODULE Module)
 
 	auto t_1 = std::chrono::high_resolution_clock::now();
 
-	std::cout << "Started Generation [Dumper-7]!\n";
+	std::wcout << L"Started Generation [Dumper-7]!\n";
 
 	Generator::InitEngineCore();
 	Generator::InitInternal();
@@ -41,9 +41,9 @@ DWORD MainThread(HMODULE Module)
 		// Only Possible in Main()
 		FString Name;
 		FString Version;
-		UEClass Kismet = ObjectArray::FindClassFast("KismetSystemLibrary");
-		UEFunction GetGameName = Kismet.GetFunction("KismetSystemLibrary", "GetGameName");
-		UEFunction GetEngineVersion = Kismet.GetFunction("KismetSystemLibrary", "GetEngineVersion");
+		UEClass Kismet = ObjectArray::FindClassFast(L"KismetSystemLibrary");
+		UEFunction GetGameName = Kismet.GetFunction(L"KismetSystemLibrary", L"GetGameName");
+		UEFunction GetEngineVersion = Kismet.GetFunction(L"KismetSystemLibrary", L"GetEngineVersion");
 
 		Kismet.ProcessEvent(GetGameName, &Name);
 		Kismet.ProcessEvent(GetEngineVersion, &Version);
@@ -52,8 +52,8 @@ DWORD MainThread(HMODULE Module)
 		Settings::Generator::GameVersion = Version.ToString();
 	}
 
-	std::cout << "GameName: " << Settings::Generator::GameName << "\n";
-	std::cout << "GameVersion: " << Settings::Generator::GameVersion << "\n\n";
+	std::wcout << L"GameName: L" << Settings::Generator::GameName << L"\n";
+	std::wcout << L"GameVersion: L" << Settings::Generator::GameVersion << L"\n\n";
 
 	Generator::Generate<CppGenerator>();
 	Generator::Generate<MappingGenerator>();
@@ -69,14 +69,14 @@ DWORD MainThread(HMODULE Module)
 
 		if (Enum.GetEnumFlags() & EEnumFlags::Flags)
 		{
-			std::cout << "Enum: " << Enum.GetCppName() << " : " << Enum.GetEnumTypeAsStr() << "\n";
+			std::wcout << L"Enum: L" << Enum.GetCppName() << L" : L" << Enum.GetEnumTypeAsStr() << L"\n";
 
 			for (auto& NameValuePair : Enum.GetNameValuePairs())
 			{
-				std::cout << "Val: " << NameValuePair.first.ToString() << " = " << NameValuePair.second << std::endl;
+				std::wcout << L"Val: L" << NameValuePair.first.ToString() << L" = L" << NameValuePair.second << std::endl;
 			}
 
-			std::cout << "\n\n";
+			std::wcout << L"\n\n";
 		}
 	}
 
@@ -85,7 +85,7 @@ DWORD MainThread(HMODULE Module)
 	auto ms_int_ = std::chrono::duration_cast<std::chrono::milliseconds>(t_C - t_1);
 	std::chrono::duration<double, std::milli> ms_double_ = t_C - t_1;
 	
-	std::cout << "\n\nGenerating SDK took (" << ms_double_.count() << "ms)\n\n\n";
+	std::wcout << L"\n\nGenerating SDK took (L" << ms_double_.count() << L"ms)\n\n\n";
 
 	while (true)
 	{

@@ -17,8 +17,8 @@ private:
 	uint8 CollisionCount = 0;
 
 public:
-	std::string GetUniqueName() const;
-	std::string GetRawName() const;
+	std::wstring GetUniqueName() const;
+	std::wstring GetRawName() const;
 	uint64 GetValue() const;
 
 	uint8 GetCollisionCount() const;

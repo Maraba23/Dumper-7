@@ -24,7 +24,7 @@ typedef unsigned __int64 uint64;
 template<typename T>
 constexpr T Align(T Size, T Alignment)
 {
-	static_assert(std::is_integral_v<T>, "Align can only hanlde integral types!");
+	static_assert(std::is_integral_v<T>, L"Align can only hanlde integral types!");
 	assert(Alignment != 0 && "Alignment was 0, division by zero exception.");
 
 	const T RequiredAlign = Alignment - (Size % Alignment);
@@ -375,44 +375,44 @@ ENUM_OPERATORS(EMappingsTypeFlags);
 ENUM_OPERATORS(EFieldClassID);
 ENUM_OPERATORS(EEnumFlags);
 
-static std::string StringifyFunctionFlags(EFunctionFlags FunctionFlags, const char* Seperator = ", ")
+static std::wstring StringifyFunctionFlags(EFunctionFlags FunctionFlags, const wchar_t* Seperator = L", L")
 {
 	/* Make sure the size of this vector is always greater, or equal, to the number of flags existing */
-	std::array<const char*, 0x30> StringFlags;
+	std::array<const wchar_t*, 0x30> StringFlags;
 	int32 CurrentIdx = 0x0;
 
-	if (FunctionFlags & EFunctionFlags::Final) { StringFlags[CurrentIdx++] = "Final"; }
-	if (FunctionFlags & EFunctionFlags::RequiredAPI) { StringFlags[CurrentIdx++] = "RequiredAPI"; }
-	if (FunctionFlags & EFunctionFlags::BlueprintAuthorityOnly) { StringFlags[CurrentIdx++] = "BlueprintAuthorityOnly"; }
-	if (FunctionFlags & EFunctionFlags::BlueprintCosmetic) { StringFlags[CurrentIdx++] = "BlueprintCosmetic"; }
-	if (FunctionFlags & EFunctionFlags::Net) { StringFlags[CurrentIdx++] = "Net"; }
-	if (FunctionFlags & EFunctionFlags::NetReliable) { StringFlags[CurrentIdx++] = "NetReliable"; }
-	if (FunctionFlags & EFunctionFlags::NetRequest) { StringFlags[CurrentIdx++] = "NetRequest"; }
-	if (FunctionFlags & EFunctionFlags::Exec) { StringFlags[CurrentIdx++] = "Exec"; }
-	if (FunctionFlags & EFunctionFlags::Native) { StringFlags[CurrentIdx++] =  "Native"; }
-	if (FunctionFlags & EFunctionFlags::Event) { StringFlags[CurrentIdx++] = "Event"; }
-	if (FunctionFlags & EFunctionFlags::NetResponse) { StringFlags[CurrentIdx++] = "NetResponse"; }
-	if (FunctionFlags & EFunctionFlags::Static) { StringFlags[CurrentIdx++] = "Static"; }
-	if (FunctionFlags & EFunctionFlags::NetMulticast) { StringFlags[CurrentIdx++] = "NetMulticast"; }
-	if (FunctionFlags & EFunctionFlags::UbergraphFunction) { StringFlags[CurrentIdx++] =  "UbergraphFunction"; }
-	if (FunctionFlags & EFunctionFlags::MulticastDelegate) { StringFlags[CurrentIdx++] =  "MulticastDelegate"; }
-	if (FunctionFlags & EFunctionFlags::Public) { StringFlags[CurrentIdx++] = "Public"; }
-	if (FunctionFlags & EFunctionFlags::Private) { StringFlags[CurrentIdx++] = "Private"; }
-	if (FunctionFlags & EFunctionFlags::Protected) { StringFlags[CurrentIdx++] = "Protected"; }
-	if (FunctionFlags & EFunctionFlags::Delegate) { StringFlags[CurrentIdx++] = "Delegate"; }
-	if (FunctionFlags & EFunctionFlags::NetServer) { StringFlags[CurrentIdx++] = "NetServer"; }
-	if (FunctionFlags & EFunctionFlags::HasOutParms) { StringFlags[CurrentIdx++] =  "HasOutParams"; }
-	if (FunctionFlags & EFunctionFlags::HasDefaults) { StringFlags[CurrentIdx++] =  "HasDefaults"; }
-	if (FunctionFlags & EFunctionFlags::NetClient) { StringFlags[CurrentIdx++] = "NetClient"; }
-	if (FunctionFlags & EFunctionFlags::DLLImport) { StringFlags[CurrentIdx++] = "DLLImport"; }
-	if (FunctionFlags & EFunctionFlags::BlueprintCallable) { StringFlags[CurrentIdx++] = "BlueprintCallable"; }
-	if (FunctionFlags & EFunctionFlags::BlueprintEvent) { StringFlags[CurrentIdx++] = "BlueprintEvent"; }
-	if (FunctionFlags & EFunctionFlags::BlueprintPure) { StringFlags[CurrentIdx++] = "BlueprintPure"; }
-	if (FunctionFlags & EFunctionFlags::EditorOnly) { StringFlags[CurrentIdx++] = "EditorOnly"; }
-	if (FunctionFlags & EFunctionFlags::Const) { StringFlags[CurrentIdx++] = "Const"; }
-	if (FunctionFlags & EFunctionFlags::NetValidate) { StringFlags[CurrentIdx++] = "NetValidate"; }
+	if (FunctionFlags & EFunctionFlags::Final) { StringFlags[CurrentIdx++] = L"Final"; }
+	if (FunctionFlags & EFunctionFlags::RequiredAPI) { StringFlags[CurrentIdx++] = L"RequiredAPI"; }
+	if (FunctionFlags & EFunctionFlags::BlueprintAuthorityOnly) { StringFlags[CurrentIdx++] = L"BlueprintAuthorityOnly"; }
+	if (FunctionFlags & EFunctionFlags::BlueprintCosmetic) { StringFlags[CurrentIdx++] = L"BlueprintCosmetic"; }
+	if (FunctionFlags & EFunctionFlags::Net) { StringFlags[CurrentIdx++] = L"Net"; }
+	if (FunctionFlags & EFunctionFlags::NetReliable) { StringFlags[CurrentIdx++] = L"NetReliable"; }
+	if (FunctionFlags & EFunctionFlags::NetRequest) { StringFlags[CurrentIdx++] = L"NetRequest"; }
+	if (FunctionFlags & EFunctionFlags::Exec) { StringFlags[CurrentIdx++] = L"Exec"; }
+	if (FunctionFlags & EFunctionFlags::Native) { StringFlags[CurrentIdx++] = L"Native"; }
+	if (FunctionFlags & EFunctionFlags::Event) { StringFlags[CurrentIdx++] = L"Event"; }
+	if (FunctionFlags & EFunctionFlags::NetResponse) { StringFlags[CurrentIdx++] = L"NetResponse"; }
+	if (FunctionFlags & EFunctionFlags::Static) { StringFlags[CurrentIdx++] = L"Static"; }
+	if (FunctionFlags & EFunctionFlags::NetMulticast) { StringFlags[CurrentIdx++] = L"NetMulticast"; }
+	if (FunctionFlags & EFunctionFlags::UbergraphFunction) { StringFlags[CurrentIdx++] = L"UbergraphFunction"; }
+	if (FunctionFlags & EFunctionFlags::MulticastDelegate) { StringFlags[CurrentIdx++] = L"MulticastDelegate"; }
+	if (FunctionFlags & EFunctionFlags::Public) { StringFlags[CurrentIdx++] = L"Public"; }
+	if (FunctionFlags & EFunctionFlags::Private) { StringFlags[CurrentIdx++] = L"Private"; }
+	if (FunctionFlags & EFunctionFlags::Protected) { StringFlags[CurrentIdx++] = L"Protected"; }
+	if (FunctionFlags & EFunctionFlags::Delegate) { StringFlags[CurrentIdx++] = L"Delegate"; }
+	if (FunctionFlags & EFunctionFlags::NetServer) { StringFlags[CurrentIdx++] = L"NetServer"; }
+	if (FunctionFlags & EFunctionFlags::HasOutParms) { StringFlags[CurrentIdx++] = L"HasOutParams"; }
+	if (FunctionFlags & EFunctionFlags::HasDefaults) { StringFlags[CurrentIdx++] = L"HasDefaults"; }
+	if (FunctionFlags & EFunctionFlags::NetClient) { StringFlags[CurrentIdx++] = L"NetClient"; }
+	if (FunctionFlags & EFunctionFlags::DLLImport) { StringFlags[CurrentIdx++] = L"DLLImport"; }
+	if (FunctionFlags & EFunctionFlags::BlueprintCallable) { StringFlags[CurrentIdx++] = L"BlueprintCallable"; }
+	if (FunctionFlags & EFunctionFlags::BlueprintEvent) { StringFlags[CurrentIdx++] = L"BlueprintEvent"; }
+	if (FunctionFlags & EFunctionFlags::BlueprintPure) { StringFlags[CurrentIdx++] = L"BlueprintPure"; }
+	if (FunctionFlags & EFunctionFlags::EditorOnly) { StringFlags[CurrentIdx++] = L"EditorOnly"; }
+	if (FunctionFlags & EFunctionFlags::Const) { StringFlags[CurrentIdx++] = L"Const"; }
+	if (FunctionFlags & EFunctionFlags::NetValidate) { StringFlags[CurrentIdx++] = L"NetValidate"; }
 
-	std::string RetFlags;
+	std::wstring RetFlags;
 	RetFlags.reserve(CurrentIdx * 0xF);
 
 	for (int i = 0; i < CurrentIdx; i++)
@@ -426,161 +426,161 @@ static std::string StringifyFunctionFlags(EFunctionFlags FunctionFlags, const ch
 	return RetFlags;
 }
 
-static std::string StringifyPropertyFlags(EPropertyFlags PropertyFlags)
+static std::wstring StringifyPropertyFlags(EPropertyFlags PropertyFlags)
 {
-	std::string RetFlags;
+	std::wstring RetFlags;
 
-	if (PropertyFlags & EPropertyFlags::Edit) { RetFlags += "Edit, "; }
-	if (PropertyFlags & EPropertyFlags::ConstParm) { RetFlags += "ConstParm, "; }
-	if (PropertyFlags & EPropertyFlags::BlueprintVisible) { RetFlags += "BlueprintVisible, "; }
-	if (PropertyFlags & EPropertyFlags::ExportObject) { RetFlags += "ExportObject, "; }
-	if (PropertyFlags & EPropertyFlags::BlueprintReadOnly) { RetFlags += "BlueprintReadOnly, "; }
-	if (PropertyFlags & EPropertyFlags::Net) { RetFlags += "Net, "; }
-	if (PropertyFlags & EPropertyFlags::EditFixedSize) { RetFlags += "EditFixedSize, "; }
-	if (PropertyFlags & EPropertyFlags::Parm) { RetFlags += "Parm, "; }
-	if (PropertyFlags & EPropertyFlags::OutParm) { RetFlags += "OutParm, "; }
-	if (PropertyFlags & EPropertyFlags::ZeroConstructor) { RetFlags += "ZeroConstructor, "; }
-	if (PropertyFlags & EPropertyFlags::ReturnParm) { RetFlags += "ReturnParm, "; }
-	if (PropertyFlags & EPropertyFlags::DisableEditOnTemplate) { RetFlags += "DisableEditOnTemplate, "; }
-	if (PropertyFlags & EPropertyFlags::Transient) { RetFlags += "Transient, "; }
-	if (PropertyFlags & EPropertyFlags::Config) { RetFlags += "Config, "; }
-	if (PropertyFlags & EPropertyFlags::DisableEditOnInstance) { RetFlags += "DisableEditOnInstance, "; }
-	if (PropertyFlags & EPropertyFlags::EditConst) { RetFlags += "EditConst, "; }
-	if (PropertyFlags & EPropertyFlags::GlobalConfig) { RetFlags += "GlobalConfig, "; }
-	if (PropertyFlags & EPropertyFlags::InstancedReference) { RetFlags += "InstancedReference, "; }
-	if (PropertyFlags & EPropertyFlags::DuplicateTransient) { RetFlags += "DuplicateTransient, "; }
-	if (PropertyFlags & EPropertyFlags::SubobjectReference) { RetFlags += "SubobjectReference, "; }
-	if (PropertyFlags & EPropertyFlags::SaveGame) { RetFlags += "SaveGame, "; }
-	if (PropertyFlags & EPropertyFlags::NoClear) { RetFlags += "NoClear, "; }
-	if (PropertyFlags & EPropertyFlags::ReferenceParm) { RetFlags += "ReferenceParm, "; }
-	if (PropertyFlags & EPropertyFlags::BlueprintAssignable) { RetFlags += "BlueprintAssignable, "; }
-	if (PropertyFlags & EPropertyFlags::Deprecated) { RetFlags += "Deprecated, "; }
-	if (PropertyFlags & EPropertyFlags::IsPlainOldData) { RetFlags += "IsPlainOldData, "; }
-	if (PropertyFlags & EPropertyFlags::RepSkip) { RetFlags += "RepSkip, "; }
-	if (PropertyFlags & EPropertyFlags::RepNotify) { RetFlags += "RepNotify, "; }
-	if (PropertyFlags & EPropertyFlags::Interp) { RetFlags += "Interp, "; }
-	if (PropertyFlags & EPropertyFlags::NonTransactional) { RetFlags += "NonTransactional, "; }
-	if (PropertyFlags & EPropertyFlags::EditorOnly) { RetFlags += "EditorOnly, "; }
-	if (PropertyFlags & EPropertyFlags::NoDestructor) { RetFlags += "NoDestructor, "; }
-	if (PropertyFlags & EPropertyFlags::AutoWeak) { RetFlags += "AutoWeak, "; }
-	if (PropertyFlags & EPropertyFlags::ContainsInstancedReference) { RetFlags += "ContainsInstancedReference, "; }
-	if (PropertyFlags & EPropertyFlags::AssetRegistrySearchable) { RetFlags += "AssetRegistrySearchable, "; }
-	if (PropertyFlags & EPropertyFlags::SimpleDisplay) { RetFlags += "SimpleDisplay, "; }
-	if (PropertyFlags & EPropertyFlags::AdvancedDisplay) { RetFlags += "AdvancedDisplay, "; }
-	if (PropertyFlags & EPropertyFlags::Protected) { RetFlags += "Protected, "; }
-	if (PropertyFlags & EPropertyFlags::BlueprintCallable) { RetFlags += "BlueprintCallable, "; }
-	if (PropertyFlags & EPropertyFlags::BlueprintAuthorityOnly) { RetFlags += "BlueprintAuthorityOnly, "; }
-	if (PropertyFlags & EPropertyFlags::TextExportTransient) { RetFlags += "TextExportTransient, "; }
-	if (PropertyFlags & EPropertyFlags::NonPIEDuplicateTransient) { RetFlags += "NonPIEDuplicateTransient, "; }
-	if (PropertyFlags & EPropertyFlags::ExposeOnSpawn) { RetFlags += "ExposeOnSpawn, "; }
-	if (PropertyFlags & EPropertyFlags::PersistentInstance) { RetFlags += "PersistentInstance, "; }
-	if (PropertyFlags & EPropertyFlags::UObjectWrapper) { RetFlags += "UObjectWrapper, "; }
-	if (PropertyFlags & EPropertyFlags::HasGetValueTypeHash) { RetFlags += "HasGetValueTypeHash, "; }
-	if (PropertyFlags & EPropertyFlags::NativeAccessSpecifierPublic) { RetFlags += "NativeAccessSpecifierPublic, "; }
-	if (PropertyFlags & EPropertyFlags::NativeAccessSpecifierProtected) { RetFlags += "NativeAccessSpecifierProtected, "; }
-	if (PropertyFlags & EPropertyFlags::NativeAccessSpecifierPrivate) { RetFlags += "NativeAccessSpecifierPrivate, "; }
+	if (PropertyFlags & EPropertyFlags::Edit) { RetFlags += L"Edit, L"; }
+	if (PropertyFlags & EPropertyFlags::ConstParm) { RetFlags += L"ConstParm, L"; }
+	if (PropertyFlags & EPropertyFlags::BlueprintVisible) { RetFlags += L"BlueprintVisible, L"; }
+	if (PropertyFlags & EPropertyFlags::ExportObject) { RetFlags += L"ExportObject, L"; }
+	if (PropertyFlags & EPropertyFlags::BlueprintReadOnly) { RetFlags += L"BlueprintReadOnly, L"; }
+	if (PropertyFlags & EPropertyFlags::Net) { RetFlags += L"Net, L"; }
+	if (PropertyFlags & EPropertyFlags::EditFixedSize) { RetFlags += L"EditFixedSize, L"; }
+	if (PropertyFlags & EPropertyFlags::Parm) { RetFlags += L"Parm, L"; }
+	if (PropertyFlags & EPropertyFlags::OutParm) { RetFlags += L"OutParm, L"; }
+	if (PropertyFlags & EPropertyFlags::ZeroConstructor) { RetFlags += L"ZeroConstructor, L"; }
+	if (PropertyFlags & EPropertyFlags::ReturnParm) { RetFlags += L"ReturnParm, L"; }
+	if (PropertyFlags & EPropertyFlags::DisableEditOnTemplate) { RetFlags += L"DisableEditOnTemplate, L"; }
+	if (PropertyFlags & EPropertyFlags::Transient) { RetFlags += L"Transient, L"; }
+	if (PropertyFlags & EPropertyFlags::Config) { RetFlags += L"Config, L"; }
+	if (PropertyFlags & EPropertyFlags::DisableEditOnInstance) { RetFlags += L"DisableEditOnInstance, L"; }
+	if (PropertyFlags & EPropertyFlags::EditConst) { RetFlags += L"EditConst, L"; }
+	if (PropertyFlags & EPropertyFlags::GlobalConfig) { RetFlags += L"GlobalConfig, L"; }
+	if (PropertyFlags & EPropertyFlags::InstancedReference) { RetFlags += L"InstancedReference, L"; }
+	if (PropertyFlags & EPropertyFlags::DuplicateTransient) { RetFlags += L"DuplicateTransient, L"; }
+	if (PropertyFlags & EPropertyFlags::SubobjectReference) { RetFlags += L"SubobjectReference, L"; }
+	if (PropertyFlags & EPropertyFlags::SaveGame) { RetFlags += L"SaveGame, L"; }
+	if (PropertyFlags & EPropertyFlags::NoClear) { RetFlags += L"NoClear, L"; }
+	if (PropertyFlags & EPropertyFlags::ReferenceParm) { RetFlags += L"ReferenceParm, L"; }
+	if (PropertyFlags & EPropertyFlags::BlueprintAssignable) { RetFlags += L"BlueprintAssignable, L"; }
+	if (PropertyFlags & EPropertyFlags::Deprecated) { RetFlags += L"Deprecated, L"; }
+	if (PropertyFlags & EPropertyFlags::IsPlainOldData) { RetFlags += L"IsPlainOldData, L"; }
+	if (PropertyFlags & EPropertyFlags::RepSkip) { RetFlags += L"RepSkip, L"; }
+	if (PropertyFlags & EPropertyFlags::RepNotify) { RetFlags += L"RepNotify, L"; }
+	if (PropertyFlags & EPropertyFlags::Interp) { RetFlags += L"Interp, L"; }
+	if (PropertyFlags & EPropertyFlags::NonTransactional) { RetFlags += L"NonTransactional, L"; }
+	if (PropertyFlags & EPropertyFlags::EditorOnly) { RetFlags += L"EditorOnly, L"; }
+	if (PropertyFlags & EPropertyFlags::NoDestructor) { RetFlags += L"NoDestructor, L"; }
+	if (PropertyFlags & EPropertyFlags::AutoWeak) { RetFlags += L"AutoWeak, L"; }
+	if (PropertyFlags & EPropertyFlags::ContainsInstancedReference) { RetFlags += L"ContainsInstancedReference, L"; }
+	if (PropertyFlags & EPropertyFlags::AssetRegistrySearchable) { RetFlags += L"AssetRegistrySearchable, L"; }
+	if (PropertyFlags & EPropertyFlags::SimpleDisplay) { RetFlags += L"SimpleDisplay, L"; }
+	if (PropertyFlags & EPropertyFlags::AdvancedDisplay) { RetFlags += L"AdvancedDisplay, L"; }
+	if (PropertyFlags & EPropertyFlags::Protected) { RetFlags += L"Protected, L"; }
+	if (PropertyFlags & EPropertyFlags::BlueprintCallable) { RetFlags += L"BlueprintCallable, L"; }
+	if (PropertyFlags & EPropertyFlags::BlueprintAuthorityOnly) { RetFlags += L"BlueprintAuthorityOnly, L"; }
+	if (PropertyFlags & EPropertyFlags::TextExportTransient) { RetFlags += L"TextExportTransient, L"; }
+	if (PropertyFlags & EPropertyFlags::NonPIEDuplicateTransient) { RetFlags += L"NonPIEDuplicateTransient, L"; }
+	if (PropertyFlags & EPropertyFlags::ExposeOnSpawn) { RetFlags += L"ExposeOnSpawn, L"; }
+	if (PropertyFlags & EPropertyFlags::PersistentInstance) { RetFlags += L"PersistentInstance, L"; }
+	if (PropertyFlags & EPropertyFlags::UObjectWrapper) { RetFlags += L"UObjectWrapper, L"; }
+	if (PropertyFlags & EPropertyFlags::HasGetValueTypeHash) { RetFlags += L"HasGetValueTypeHash, L"; }
+	if (PropertyFlags & EPropertyFlags::NativeAccessSpecifierPublic) { RetFlags += L"NativeAccessSpecifierPublic, L"; }
+	if (PropertyFlags & EPropertyFlags::NativeAccessSpecifierProtected) { RetFlags += L"NativeAccessSpecifierProtected, L"; }
+	if (PropertyFlags & EPropertyFlags::NativeAccessSpecifierPrivate) { RetFlags += L"NativeAccessSpecifierPrivate, L"; }
 
 	return RetFlags.size() > 2 ? RetFlags.erase(RetFlags.size() - 2) : RetFlags;
 }
 
-static std::string StringifyObjectFlags(EObjectFlags ObjFlags)
+static std::wstring StringifyObjectFlags(EObjectFlags ObjFlags)
 {
-	std::string RetFlags;
+	std::wstring RetFlags;
 
-	if (ObjFlags & EObjectFlags::Public) { RetFlags += "Public, "; }
-	if (ObjFlags & EObjectFlags::Standalone) { RetFlags += "Standalone, "; }
-	if (ObjFlags & EObjectFlags::MarkAsNative) { RetFlags += "MarkAsNative, "; }
-	if (ObjFlags & EObjectFlags::Transactional) { RetFlags += "Transactional, "; }
-	if (ObjFlags & EObjectFlags::ClassDefaultObject) { RetFlags += "ClassDefaultObject, "; }
-	if (ObjFlags & EObjectFlags::ArchetypeObject) { RetFlags += "ArchetypeObject, "; }
-	if (ObjFlags & EObjectFlags::Transient) { RetFlags += "Transient, "; }
-	if (ObjFlags & EObjectFlags::MarkAsRootSet) { RetFlags += "MarkAsRootSet, "; }
-	if (ObjFlags & EObjectFlags::TagGarbageTemp) { RetFlags += "TagGarbageTemp, "; }
-	if (ObjFlags & EObjectFlags::NeedInitialization) { RetFlags += "NeedInitialization, "; }
-	if (ObjFlags & EObjectFlags::NeedLoad) { RetFlags += "NeedLoad, "; }
-	if (ObjFlags & EObjectFlags::KeepForCooker) { RetFlags += "KeepForCooker, "; }
-	if (ObjFlags & EObjectFlags::NeedPostLoad) { RetFlags += "NeedPostLoad, "; }
-	if (ObjFlags & EObjectFlags::NeedPostLoadSubobjects) { RetFlags += "NeedPostLoadSubobjects, "; }
-	if (ObjFlags & EObjectFlags::NewerVersionExists) { RetFlags += "NewerVersionExists, "; }
-	if (ObjFlags & EObjectFlags::BeginDestroyed) { RetFlags += "BeginDestroyed, "; }
-	if (ObjFlags & EObjectFlags::FinishDestroyed) { RetFlags += "FinishDestroyed, "; }
-	if (ObjFlags & EObjectFlags::BeingRegenerated) { RetFlags += "BeingRegenerated, "; }
-	if (ObjFlags & EObjectFlags::DefaultSubObject) { RetFlags += "DefaultSubObject, "; }
-	if (ObjFlags & EObjectFlags::WasLoaded) { RetFlags += "WasLoaded, "; }
-	if (ObjFlags & EObjectFlags::TextExportTransient) { RetFlags += "TextExportTransient, "; }
-	if (ObjFlags & EObjectFlags::LoadCompleted) { RetFlags += "LoadCompleted, "; }
-	if (ObjFlags & EObjectFlags::InheritableComponentTemplate) { RetFlags += "InheritableComponentTemplate, "; }
-	if (ObjFlags & EObjectFlags::DuplicateTransient) { RetFlags += "DuplicateTransient, "; }
-	if (ObjFlags & EObjectFlags::StrongRefOnFrame) { RetFlags += "StrongRefOnFrame, "; }
-	if (ObjFlags & EObjectFlags::NonPIEDuplicateTransient) { RetFlags += "NonPIEDuplicateTransient, "; }
-	if (ObjFlags & EObjectFlags::Dynamic) { RetFlags += "Dynamic, "; }
-	if (ObjFlags & EObjectFlags::WillBeLoaded) { RetFlags += "WillBeLoaded, "; }
+	if (ObjFlags & EObjectFlags::Public) { RetFlags += L"Public, L"; }
+	if (ObjFlags & EObjectFlags::Standalone) { RetFlags += L"Standalone, L"; }
+	if (ObjFlags & EObjectFlags::MarkAsNative) { RetFlags += L"MarkAsNative, L"; }
+	if (ObjFlags & EObjectFlags::Transactional) { RetFlags += L"Transactional, L"; }
+	if (ObjFlags & EObjectFlags::ClassDefaultObject) { RetFlags += L"ClassDefaultObject, L"; }
+	if (ObjFlags & EObjectFlags::ArchetypeObject) { RetFlags += L"ArchetypeObject, L"; }
+	if (ObjFlags & EObjectFlags::Transient) { RetFlags += L"Transient, L"; }
+	if (ObjFlags & EObjectFlags::MarkAsRootSet) { RetFlags += L"MarkAsRootSet, L"; }
+	if (ObjFlags & EObjectFlags::TagGarbageTemp) { RetFlags += L"TagGarbageTemp, L"; }
+	if (ObjFlags & EObjectFlags::NeedInitialization) { RetFlags += L"NeedInitialization, L"; }
+	if (ObjFlags & EObjectFlags::NeedLoad) { RetFlags += L"NeedLoad, L"; }
+	if (ObjFlags & EObjectFlags::KeepForCooker) { RetFlags += L"KeepForCooker, L"; }
+	if (ObjFlags & EObjectFlags::NeedPostLoad) { RetFlags += L"NeedPostLoad, L"; }
+	if (ObjFlags & EObjectFlags::NeedPostLoadSubobjects) { RetFlags += L"NeedPostLoadSubobjects, L"; }
+	if (ObjFlags & EObjectFlags::NewerVersionExists) { RetFlags += L"NewerVersionExists, L"; }
+	if (ObjFlags & EObjectFlags::BeginDestroyed) { RetFlags += L"BeginDestroyed, L"; }
+	if (ObjFlags & EObjectFlags::FinishDestroyed) { RetFlags += L"FinishDestroyed, L"; }
+	if (ObjFlags & EObjectFlags::BeingRegenerated) { RetFlags += L"BeingRegenerated, L"; }
+	if (ObjFlags & EObjectFlags::DefaultSubObject) { RetFlags += L"DefaultSubObject, L"; }
+	if (ObjFlags & EObjectFlags::WasLoaded) { RetFlags += L"WasLoaded, L"; }
+	if (ObjFlags & EObjectFlags::TextExportTransient) { RetFlags += L"TextExportTransient, L"; }
+	if (ObjFlags & EObjectFlags::LoadCompleted) { RetFlags += L"LoadCompleted, L"; }
+	if (ObjFlags & EObjectFlags::InheritableComponentTemplate) { RetFlags += L"InheritableComponentTemplate, L"; }
+	if (ObjFlags & EObjectFlags::DuplicateTransient) { RetFlags += L"DuplicateTransient, L"; }
+	if (ObjFlags & EObjectFlags::StrongRefOnFrame) { RetFlags += L"StrongRefOnFrame, L"; }
+	if (ObjFlags & EObjectFlags::NonPIEDuplicateTransient) { RetFlags += L"NonPIEDuplicateTransient, L"; }
+	if (ObjFlags & EObjectFlags::Dynamic) { RetFlags += L"Dynamic, L"; }
+	if (ObjFlags & EObjectFlags::WillBeLoaded) { RetFlags += L"WillBeLoaded, L"; }
 
 	return RetFlags.size() > 2 ? RetFlags.erase(RetFlags.size() - 2) : RetFlags;
 }
 
-static std::string StringifyClassCastFlags(EClassCastFlags CastFlags)
+static std::wstring StringifyClassCastFlags(EClassCastFlags CastFlags)
 {
-	std::string RetFlags;
+	std::wstring RetFlags;
 
-	if (CastFlags & EClassCastFlags::Field) { RetFlags += "Field, "; }
-	if (CastFlags & EClassCastFlags::Int8Property) { RetFlags += "Int8Property, "; }
-	if (CastFlags & EClassCastFlags::Enum) { RetFlags += "Enum, "; }
-	if (CastFlags & EClassCastFlags::Struct) { RetFlags += "Struct, "; }
-	if (CastFlags & EClassCastFlags::ScriptStruct) { RetFlags += "ScriptStruct, "; }
-	if (CastFlags & EClassCastFlags::Class) { RetFlags += "Class, "; }
-	if (CastFlags & EClassCastFlags::ByteProperty) { RetFlags += "ByteProperty, "; }
-	if (CastFlags & EClassCastFlags::IntProperty) { RetFlags += "IntProperty, "; }
-	if (CastFlags & EClassCastFlags::FloatProperty) { RetFlags += "FloatProperty, "; }
-	if (CastFlags & EClassCastFlags::UInt64Property) { RetFlags += "UInt64Property, "; }
-	if (CastFlags & EClassCastFlags::ClassProperty) { RetFlags += "ClassProperty, "; }
-	if (CastFlags & EClassCastFlags::UInt32Property) { RetFlags += "UInt32Property, "; }
-	if (CastFlags & EClassCastFlags::InterfaceProperty) { RetFlags += "InterfaceProperty, "; }
-	if (CastFlags & EClassCastFlags::NameProperty) { RetFlags += "NameProperty, "; }
-	if (CastFlags & EClassCastFlags::StrProperty) { RetFlags += "StrProperty, "; }
-	if (CastFlags & EClassCastFlags::Property) { RetFlags += "Property, "; }
-	if (CastFlags & EClassCastFlags::ObjectProperty) { RetFlags += "ObjectProperty, "; }
-	if (CastFlags & EClassCastFlags::BoolProperty) { RetFlags += "BoolProperty, "; }
-	if (CastFlags & EClassCastFlags::UInt16Property) { RetFlags += "UInt16Property, "; }
-	if (CastFlags & EClassCastFlags::Function) { RetFlags += "Function, "; }
-	if (CastFlags & EClassCastFlags::StructProperty) { RetFlags += "StructProperty, "; }
-	if (CastFlags & EClassCastFlags::ArrayProperty) { RetFlags += "ArrayProperty, "; }
-	if (CastFlags & EClassCastFlags::Int64Property) { RetFlags += "Int64Property, "; }
-	if (CastFlags & EClassCastFlags::DelegateProperty) { RetFlags += "DelegateProperty, "; }
-	if (CastFlags & EClassCastFlags::NumericProperty) { RetFlags += "NumericProperty, "; }
-	if (CastFlags & EClassCastFlags::MulticastDelegateProperty) { RetFlags += "MulticastDelegateProperty, "; }
-	if (CastFlags & EClassCastFlags::ObjectPropertyBase) { RetFlags += "ObjectPropertyBase, "; }
-	if (CastFlags & EClassCastFlags::WeakObjectProperty) { RetFlags += "WeakObjectProperty, "; }
-	if (CastFlags & EClassCastFlags::LazyObjectProperty) { RetFlags += "LazyObjectProperty, "; }
-	if (CastFlags & EClassCastFlags::SoftObjectProperty) { RetFlags += "SoftObjectProperty, "; }
-	if (CastFlags & EClassCastFlags::TextProperty) { RetFlags += "TextProperty, "; }
-	if (CastFlags & EClassCastFlags::Int16Property) { RetFlags += "Int16Property, "; }
-	if (CastFlags & EClassCastFlags::DoubleProperty) { RetFlags += "DoubleProperty, "; }
-	if (CastFlags & EClassCastFlags::SoftClassProperty) { RetFlags += "SoftClassProperty, "; }
-	if (CastFlags & EClassCastFlags::Package) { RetFlags += "Package, "; }
-	if (CastFlags & EClassCastFlags::Level) { RetFlags += "Level, "; }
-	if (CastFlags & EClassCastFlags::Actor) { RetFlags += "Actor, "; }
-	if (CastFlags & EClassCastFlags::PlayerController) { RetFlags += "PlayerController, "; }
-	if (CastFlags & EClassCastFlags::Pawn) { RetFlags += "Pawn, "; }
-	if (CastFlags & EClassCastFlags::SceneComponent) { RetFlags += "SceneComponent, "; }
-	if (CastFlags & EClassCastFlags::PrimitiveComponent) { RetFlags += "PrimitiveComponent, "; }
-	if (CastFlags & EClassCastFlags::SkinnedMeshComponent) { RetFlags += "SkinnedMeshComponent, "; }
-	if (CastFlags & EClassCastFlags::SkeletalMeshComponent) { RetFlags += "SkeletalMeshComponent, "; }
-	if (CastFlags & EClassCastFlags::Blueprint) { RetFlags += "Blueprint, "; }
-	if (CastFlags & EClassCastFlags::DelegateFunction) { RetFlags += "DelegateFunction, "; }
-	if (CastFlags & EClassCastFlags::StaticMeshComponent) { RetFlags += "StaticMeshComponent, "; }
-	if (CastFlags & EClassCastFlags::MapProperty) { RetFlags += "MapProperty, "; }
-	if (CastFlags & EClassCastFlags::SetProperty) { RetFlags += "SetProperty, "; }
-	if (CastFlags & EClassCastFlags::EnumProperty) { RetFlags += "EnumProperty, "; }
-	if (CastFlags & EClassCastFlags::SparseDelegateFunction) { RetFlags += "SparseDelegateFunction, "; }
-	if (CastFlags & EClassCastFlags::MulticastInlineDelegateProperty) { RetFlags += "MulticastInlineDelegateProperty, "; }
-	if (CastFlags & EClassCastFlags::MulticastSparseDelegateProperty) { RetFlags += "MulticastSparseDelegateProperty, "; }
-	if (CastFlags & EClassCastFlags::FieldPathProperty) { RetFlags += "MarkAsFieldPathPropertyRootSet, "; }
-	if (CastFlags & EClassCastFlags::LargeWorldCoordinatesRealProperty) { RetFlags += "LargeWorldCoordinatesRealProperty, "; }
-	if (CastFlags & EClassCastFlags::OptionalProperty) { RetFlags += "OptionalProperty, "; }
-	if (CastFlags & EClassCastFlags::VValueProperty) { RetFlags += "VValueProperty, "; }
-	if (CastFlags & EClassCastFlags::VerseVMClass) { RetFlags += "VerseVMClass, "; }
-	if (CastFlags & EClassCastFlags::VRestValueProperty) { RetFlags += "VRestValueProperty, "; }
+	if (CastFlags & EClassCastFlags::Field) { RetFlags += L"Field, L"; }
+	if (CastFlags & EClassCastFlags::Int8Property) { RetFlags += L"Int8Property, L"; }
+	if (CastFlags & EClassCastFlags::Enum) { RetFlags += L"Enum, L"; }
+	if (CastFlags & EClassCastFlags::Struct) { RetFlags += L"Struct, L"; }
+	if (CastFlags & EClassCastFlags::ScriptStruct) { RetFlags += L"ScriptStruct, L"; }
+	if (CastFlags & EClassCastFlags::Class) { RetFlags += L"Class, L"; }
+	if (CastFlags & EClassCastFlags::ByteProperty) { RetFlags += L"ByteProperty, L"; }
+	if (CastFlags & EClassCastFlags::IntProperty) { RetFlags += L"IntProperty, L"; }
+	if (CastFlags & EClassCastFlags::FloatProperty) { RetFlags += L"FloatProperty, L"; }
+	if (CastFlags & EClassCastFlags::UInt64Property) { RetFlags += L"UInt64Property, L"; }
+	if (CastFlags & EClassCastFlags::ClassProperty) { RetFlags += L"ClassProperty, L"; }
+	if (CastFlags & EClassCastFlags::UInt32Property) { RetFlags += L"UInt32Property, L"; }
+	if (CastFlags & EClassCastFlags::InterfaceProperty) { RetFlags += L"InterfaceProperty, L"; }
+	if (CastFlags & EClassCastFlags::NameProperty) { RetFlags += L"NameProperty, L"; }
+	if (CastFlags & EClassCastFlags::StrProperty) { RetFlags += L"StrProperty, L"; }
+	if (CastFlags & EClassCastFlags::Property) { RetFlags += L"Property, L"; }
+	if (CastFlags & EClassCastFlags::ObjectProperty) { RetFlags += L"ObjectProperty, L"; }
+	if (CastFlags & EClassCastFlags::BoolProperty) { RetFlags += L"BoolProperty, L"; }
+	if (CastFlags & EClassCastFlags::UInt16Property) { RetFlags += L"UInt16Property, L"; }
+	if (CastFlags & EClassCastFlags::Function) { RetFlags += L"Function, L"; }
+	if (CastFlags & EClassCastFlags::StructProperty) { RetFlags += L"StructProperty, L"; }
+	if (CastFlags & EClassCastFlags::ArrayProperty) { RetFlags += L"ArrayProperty, L"; }
+	if (CastFlags & EClassCastFlags::Int64Property) { RetFlags += L"Int64Property, L"; }
+	if (CastFlags & EClassCastFlags::DelegateProperty) { RetFlags += L"DelegateProperty, L"; }
+	if (CastFlags & EClassCastFlags::NumericProperty) { RetFlags += L"NumericProperty, L"; }
+	if (CastFlags & EClassCastFlags::MulticastDelegateProperty) { RetFlags += L"MulticastDelegateProperty, L"; }
+	if (CastFlags & EClassCastFlags::ObjectPropertyBase) { RetFlags += L"ObjectPropertyBase, L"; }
+	if (CastFlags & EClassCastFlags::WeakObjectProperty) { RetFlags += L"WeakObjectProperty, L"; }
+	if (CastFlags & EClassCastFlags::LazyObjectProperty) { RetFlags += L"LazyObjectProperty, L"; }
+	if (CastFlags & EClassCastFlags::SoftObjectProperty) { RetFlags += L"SoftObjectProperty, L"; }
+	if (CastFlags & EClassCastFlags::TextProperty) { RetFlags += L"TextProperty, L"; }
+	if (CastFlags & EClassCastFlags::Int16Property) { RetFlags += L"Int16Property, L"; }
+	if (CastFlags & EClassCastFlags::DoubleProperty) { RetFlags += L"DoubleProperty, L"; }
+	if (CastFlags & EClassCastFlags::SoftClassProperty) { RetFlags += L"SoftClassProperty, L"; }
+	if (CastFlags & EClassCastFlags::Package) { RetFlags += L"Package, L"; }
+	if (CastFlags & EClassCastFlags::Level) { RetFlags += L"Level, L"; }
+	if (CastFlags & EClassCastFlags::Actor) { RetFlags += L"Actor, L"; }
+	if (CastFlags & EClassCastFlags::PlayerController) { RetFlags += L"PlayerController, L"; }
+	if (CastFlags & EClassCastFlags::Pawn) { RetFlags += L"Pawn, L"; }
+	if (CastFlags & EClassCastFlags::SceneComponent) { RetFlags += L"SceneComponent, L"; }
+	if (CastFlags & EClassCastFlags::PrimitiveComponent) { RetFlags += L"PrimitiveComponent, L"; }
+	if (CastFlags & EClassCastFlags::SkinnedMeshComponent) { RetFlags += L"SkinnedMeshComponent, L"; }
+	if (CastFlags & EClassCastFlags::SkeletalMeshComponent) { RetFlags += L"SkeletalMeshComponent, L"; }
+	if (CastFlags & EClassCastFlags::Blueprint) { RetFlags += L"Blueprint, L"; }
+	if (CastFlags & EClassCastFlags::DelegateFunction) { RetFlags += L"DelegateFunction, L"; }
+	if (CastFlags & EClassCastFlags::StaticMeshComponent) { RetFlags += L"StaticMeshComponent, L"; }
+	if (CastFlags & EClassCastFlags::MapProperty) { RetFlags += L"MapProperty, L"; }
+	if (CastFlags & EClassCastFlags::SetProperty) { RetFlags += L"SetProperty, L"; }
+	if (CastFlags & EClassCastFlags::EnumProperty) { RetFlags += L"EnumProperty, L"; }
+	if (CastFlags & EClassCastFlags::SparseDelegateFunction) { RetFlags += L"SparseDelegateFunction, L"; }
+	if (CastFlags & EClassCastFlags::MulticastInlineDelegateProperty) { RetFlags += L"MulticastInlineDelegateProperty, L"; }
+	if (CastFlags & EClassCastFlags::MulticastSparseDelegateProperty) { RetFlags += L"MulticastSparseDelegateProperty, L"; }
+	if (CastFlags & EClassCastFlags::FieldPathProperty) { RetFlags += L"MarkAsFieldPathPropertyRootSet, L"; }
+	if (CastFlags & EClassCastFlags::LargeWorldCoordinatesRealProperty) { RetFlags += L"LargeWorldCoordinatesRealProperty, L"; }
+	if (CastFlags & EClassCastFlags::OptionalProperty) { RetFlags += L"OptionalProperty, L"; }
+	if (CastFlags & EClassCastFlags::VValueProperty) { RetFlags += L"VValueProperty, L"; }
+	if (CastFlags & EClassCastFlags::VerseVMClass) { RetFlags += L"VerseVMClass, L"; }
+	if (CastFlags & EClassCastFlags::VRestValueProperty) { RetFlags += L"VRestValueProperty, L"; }
 
 	return RetFlags.size() > 2 ? RetFlags.erase(RetFlags.size() - 2) : RetFlags;
 }

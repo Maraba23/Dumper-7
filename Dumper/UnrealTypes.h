@@ -8,7 +8,7 @@
 #include "Utils.h"
 #include "Offsets.h"
 
-extern std::string MakeNameValid(std::string&& Name);
+extern std::wstring MakeNameValid(std::wstring&& Name);
 
 template<typename ValueType, typename KeyType>
 class TPair
@@ -138,15 +138,15 @@ public:
 		return L"";
 	}
 
-	inline std::string ToString() const
+	inline std::wstring ToString() const
 	{
 		if (IsValid())
 		{
 			std::wstring WData(Data);
-			return std::string(WData.begin(), WData.end());
+			return std::wstring(WData.begin(), WData.end());
 		}
 
-		return "";
+		return L"";
 	}
 };
 
@@ -177,7 +177,7 @@ public:
 private:
 	inline static void(*AppendString)(const void*, FString&) = nullptr;
 
-	inline static std::string(*ToStr)(const void* Name) = nullptr;
+	inline static std::wstring(*ToStr)(const void* Name) = nullptr;
 
 private:
 	const uint8* Address;
@@ -196,9 +196,9 @@ public:
 public:
 	inline const void* GetAddress() const { return Address; }
 
-	std::string ToString() const;
-	std::string ToRawString() const;
-	std::string ToValidString() const;
+	std::wstring ToString() const;
+	std::wstring ToRawString() const;
+	std::wstring ToValidString() const;
 
 	int32 GetCompIdx() const;
 	int32 GetNumber() const;
@@ -207,7 +207,7 @@ public:
 
 	bool operator!=(FName Other) const;
 
-	static std::string CompIdxToString(int CmpIdx);
+	static std::wstring CompIdxToString(int CmpIdx);
 
 	static void* DEBUGGetAppendString();
 };

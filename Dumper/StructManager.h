@@ -119,9 +119,9 @@ public:
 	}
 
 	// debug function
-	static inline std::string GetName(HashStringTableIndex NameIndex)
+	static inline std::wstring GetName(HashStringTableIndex NameIndex)
 	{
-		return UniqueNameTable[NameIndex].GetName();
+		return UniqueNameTable[NameIndex].GetWideName();
 	}
 
 	static inline StructInfoHandle GetInfo(const UEStruct Struct)

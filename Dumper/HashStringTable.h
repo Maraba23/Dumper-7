@@ -18,11 +18,11 @@ static constexpr uint8_t FiveBitPermutation[MaxHashNumber] = {
     0x1B, 0x03, 0x0D, 0x1A, 0x1C, 0x01, 0x09, 0x05,
 };
 
-inline uint8 SmallPearsonHash(const char* StringToHash)
+inline uint8 SmallPearsonHash(const wchar_t* StringToHash)
 {
     uint8 Hash = 0;
 
-    while (*StringToHash != '\0')
+    while (*StringToHash != L'\0')
     {
         const uint8 MaskedDownChar = (*StringToHash - 'A') & HashMask;
         Hash = FiveBitPermutation[Hash ^ MaskedDownChar];
@@ -295,7 +295,7 @@ public:
     std::pair<HashStringTableIndex, bool> FindOrAdd(const CharType* Str, int32 Length, bool bShouldMarkAsDuplicated = true);
 
     /* returns pair<Index, bWasAdded> */
-    std::pair<HashStringTableIndex, bool> FindOrAdd(const std::string& String, bool bShouldMarkAsDuplicated = true);
+    std::pair<HashStringTableIndex, bool> FindOrAdd(const std::wstring& String, bool bShouldMarkAsDuplicated = true);
 
     int32 GetTotalUsedSize() const;
 

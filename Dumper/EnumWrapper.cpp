@@ -11,26 +11,26 @@ UEEnum EnumWrapper::GetUnrealEnum() const
     return Enum;
 }
 
-std::string EnumWrapper::GetName() const
+std::wstring EnumWrapper::GetName() const
 {
     return Enum.GetEnumPrefixedName();
 }
 
-std::string EnumWrapper::GetRawName() const
+std::wstring EnumWrapper::GetRawName() const
 {
     return Enum.GetName();
 }
 
-std::string EnumWrapper::GetFullName() const
+std::wstring EnumWrapper::GetFullName() const
 {
     return Enum.GetFullName();
 }
 
-std::pair<std::string, bool> EnumWrapper::GetUniqueName() const
+std::pair<std::wstring, bool> EnumWrapper::GetUniqueName() const
 {
     const StringEntry& Name = InfoHandle.GetName();
 
-    return { Name.GetName(), Name.IsUnique() };
+    return { Name.GetWideName(), Name.IsUnique() };
 }
 
 uint8 EnumWrapper::GetUnderlyingTypeSize() const

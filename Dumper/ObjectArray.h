@@ -20,7 +20,7 @@ private:
 	static uint32 FUObjectItemInitialOffset;
 
 public:
-	static std::string DecryptionLambdaStr;
+	static std::wstring DecryptionLambdaStr;
 
 private:
 	static inline void*(*ByIndex)(void* ObjectsArray, int32 Index, uint32 FUObjectItemSize, uint32 FUObjectItemOffset, uint32 PerChunk) = nullptr;
@@ -32,7 +32,7 @@ private:
 	static void InitializeChunkSize(uint8_t* GObjects);
 
 public:
-	static void InitDecryption(uint8_t* (*DecryptionFunction)(void* ObjPtr), const char* DecryptionLambdaAsStr);
+	static void InitDecryption(uint8_t* (*DecryptionFunction)(void* ObjPtr), const wchar_t* DecryptionLambdaAsStr);
 
 	static void Init(bool bScanAllMemory = false);
 
@@ -46,17 +46,17 @@ public:
 	static UEType GetByIndex(int32 Index);
 
 	template<typename UEType = UEObject>
-	static UEType FindObject(std::string FullName, EClassCastFlags RequiredType = EClassCastFlags::None);
+	static UEType FindObject(std::wstring FullName, EClassCastFlags RequiredType = EClassCastFlags::None);
 
 	template<typename UEType = UEObject>
-	static UEType FindObjectFast(std::string Name, EClassCastFlags RequiredType = EClassCastFlags::None);
+	static UEType FindObjectFast(std::wstring Name, EClassCastFlags RequiredType = EClassCastFlags::None);
 
 	template<typename UEType = UEObject>
-	static UEType FindObjectFastInOuter(std::string Name, std::string Outer);
+	static UEType FindObjectFastInOuter(std::wstring Name, std::wstring Outer);
 
-	static UEClass FindClass(std::string FullName);
+	static UEClass FindClass(std::wstring FullName);
 
-	static UEClass FindClassFast(std::string Name);
+	static UEClass FindClassFast(std::wstring Name);
 
 	class ObjectsIterator
 	{

@@ -32,8 +32,8 @@ private:
         bool bIsConst;
         EPropertyFlags PropFlags;
 
-        std::string Type;
-        std::string Name;
+        std::wstring Type;
+        std::wstring Name;
     };
 
     struct FunctionInfo
@@ -41,8 +41,8 @@ private:
         bool bIsReturningVoid;
         EFunctionFlags FuncFlags = EFunctionFlags::None;
 
-        std::string RetType;
-        std::string FuncNameWithParams;
+        std::wstring RetType;
+        std::wstring FuncNameWithParams;
 
         std::vector<ParamInfo> UnrealFuncParams; // for unreal-functions only
     };
@@ -68,13 +68,13 @@ private:
     };
 
 private:
-    using StreamType = std::ofstream;
+    using StreamType = std::wofstream;
 
 public:
     static inline PredefinedMemberLookupMapType PredefinedMembers;
 
-    static inline std::string MainFolderName = "CppSDK";
-    static inline std::string SubfolderName = "SDK";
+    static inline std::wstring MainFolderName = L"CppSDK";
+    static inline std::wstring SubfolderName = L"SDK";
 
     static inline fs::path MainFolder;
     static inline fs::path Subfolder;
@@ -83,38 +83,38 @@ private:
     static inline std::vector<PredefinedStruct> PredefinedStructs;
 
 private:
-    static std::string MakeMemberString(const std::string& Type, const std::string& Name, std::string&& Comment);
-    static std::string MakeMemberStringWithoutName(const std::string& Type, std::string&& Comment);
+    static std::wstring MakeMemberString(const std::wstring& Type, const std::wstring& Name, std::wstring&& Comment);
+    static std::wstring MakeMemberStringWithoutName(const std::wstring& Type, std::wstring&& Comment);
 
-    static std::string GenerateBytePadding(const int32 Offset, const int32 PadSize, std::string&& Reason);
-    static std::string GenerateBitPadding(uint8 UnderlayingSizeBytes, const uint8 PrevBitPropertyEndBit, const int32 Offset, const int32 PadSize, std::string&& Reason);
+    static std::wstring GenerateBytePadding(const int32 Offset, const int32 PadSize, std::wstring&& Reason);
+    static std::wstring GenerateBitPadding(uint8 UnderlayingSizeBytes, const uint8 PrevBitPropertyEndBit, const int32 Offset, const int32 PadSize, std::wstring&& Reason);
 
-    static std::string GenerateMembers(const StructWrapper& Struct, const MemberManager& Members, int32 SuperSize, int32 SuperLastMemberEnd, int32 SuperAlign, int32 PackageIndex = -1);
-    static std::string GenerateFunctionInHeader(const MemberManager& Members);
+    static std::wstring GenerateMembers(const StructWrapper& Struct, const MemberManager& Members, int32 SuperSize, int32 SuperLastMemberEnd, int32 SuperAlign, int32 PackageIndex = -1);
+    static std::wstring GenerateFunctionInHeader(const MemberManager& Members);
     static FunctionInfo GenerateFunctionInfo(const FunctionWrapper& Func);
 
     // return: In-header function declarations and inline functions
-    static std::string GenerateSingleFunction(const FunctionWrapper& Func, const std::string& StructName, StreamType& FunctionFile, StreamType& ParamFile);
-    static std::string GenerateFunctions(const StructWrapper& Struct, const MemberManager& Members, const std::string& StructName, StreamType& FunctionFile, StreamType& ParamFile);
+    static std::wstring GenerateSingleFunction(const FunctionWrapper& Func, const std::wstring& StructName, StreamType& FunctionFile, StreamType& ParamFile);
+    static std::wstring GenerateFunctions(const StructWrapper& Struct, const MemberManager& Members, const std::wstring& StructName, StreamType& FunctionFile, StreamType& ParamFile);
 
     static void GenerateStruct(const StructWrapper& Struct, StreamType& StructFile, StreamType& FunctionFile, StreamType& ParamFile, int32 PackageIndex = -1);
 
     static void GenerateEnum(const EnumWrapper& Enum, StreamType& StructFile);
 
 private: /* utility functions */
-    static std::string GetMemberTypeString(const PropertyWrapper& MemberWrapper, int32 PackageIndex = -1, bool bAllowForConstPtrMembers = false /* const USomeClass* Member; */);
-    static std::string GetMemberTypeString(UEProperty Member, int32 PackageIndex = -1, bool bAllowForConstPtrMembers = false);
-    static std::string GetMemberTypeStringWithoutConst(UEProperty Member, int32 PackageIndex = -1);
+    static std::wstring GetMemberTypeString(const PropertyWrapper& MemberWrapper, int32 PackageIndex = -1, bool bAllowForConstPtrMembers = false /* const USomeClass* Member; */);
+    static std::wstring GetMemberTypeString(UEProperty Member, int32 PackageIndex = -1, bool bAllowForConstPtrMembers = false);
+    static std::wstring GetMemberTypeStringWithoutConst(UEProperty Member, int32 PackageIndex = -1);
 
-    static std::string GetFunctionSignature(UEFunction Func);
+    static std::wstring GetFunctionSignature(UEFunction Func);
 
-    static std::string GetStructPrefixedName(const StructWrapper& Struct);
-    static std::string GetEnumPrefixedName(const EnumWrapper& Enum);
-    static std::string GetEnumUnderlayingType(const EnumWrapper& Enm);
+    static std::wstring GetStructPrefixedName(const StructWrapper& Struct);
+    static std::wstring GetEnumPrefixedName(const EnumWrapper& Enum);
+    static std::wstring GetEnumUnderlayingType(const EnumWrapper& Enm);
 
-    static std::string GetCycleFixupType(const StructWrapper& Struct, bool bIsForInheritance);
+    static std::wstring GetCycleFixupType(const StructWrapper& Struct, bool bIsForInheritance);
 
-    static std::unordered_map<std::string, UEProperty> GetUnknownProperties();
+    static std::unordered_map<std::wstring, UEProperty> GetUnknownProperties();
 
 private:
     static void GenerateEnumFwdDeclarations(StreamType& ClassOrStructFile, PackageInfoHandle Package, bool bIsClassFile);
@@ -123,7 +123,7 @@ private:
     static void GenerateNameCollisionsInl(StreamType& NameCollisionsFile);
     static void GeneratePropertyFixupFile(StreamType& PropertyFixup);
     static void GenerateDebugAssertions(StreamType& AssertionStream);
-    static void WriteFileHead(StreamType& File, PackageInfoHandle Package, EFileType Type, const std::string& CustomFileComment = "", const std::string& CustomIncludes = "");
+    static void WriteFileHead(StreamType& File, PackageInfoHandle Package, EFileType Type, const std::wstring& CustomFileComment = L"", const std::wstring& CustomIncludes = L"");
     static void WriteFileEnd(StreamType& File, EFileType Type);
 
     static void GenerateSDKHeader(StreamType& SdkHpp);

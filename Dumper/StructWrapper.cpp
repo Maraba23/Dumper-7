@@ -19,19 +19,19 @@ UEStruct StructWrapper::GetUnrealStruct() const
     return bIsUnrealStruct ? Struct : nullptr;
 }
 
-std::string StructWrapper::GetName() const
+std::wstring StructWrapper::GetName() const
 {
     return bIsUnrealStruct ? Struct.GetValidName() : PredefStruct->UniqueName;
 }
 
-std::string StructWrapper::GetRawName() const
+std::wstring StructWrapper::GetRawName() const
 {
     return bIsUnrealStruct ? Struct.GetName() : PredefStruct->UniqueName;
 }
 
-std::string StructWrapper::GetFullName() const
+std::wstring StructWrapper::GetFullName() const
 {
-    return bIsUnrealStruct ? Struct.GetFullName() : "Predefined struct " + PredefStruct->UniqueName;
+    return bIsUnrealStruct ? Struct.GetFullName() : L"Predefined struct " + PredefStruct->UniqueName;
 }
 
 StructWrapper StructWrapper::GetSuper() const
@@ -46,9 +46,9 @@ MemberManager StructWrapper::GetMembers() const
 
 
 /* Name, bIsUnique */
-std::pair<std::string, bool> StructWrapper::GetUniqueName() const
+std::pair<std::wstring, bool> StructWrapper::GetUniqueName() const
 {
-    return { bIsUnrealStruct ? InfoHandle.GetName().GetName() : PredefStruct->UniqueName, bIsUnrealStruct ? InfoHandle.GetName().IsUnique() : true };
+    return { bIsUnrealStruct ? InfoHandle.GetName().GetWideName() : PredefStruct->UniqueName, bIsUnrealStruct ? InfoHandle.GetName().IsUnique() : true };
 }
 
 int32 StructWrapper::GetLastMemberEnd() const
@@ -134,7 +134,7 @@ bool StructWrapper::HasCustomTemplateText() const
     return !IsUnrealStruct() && !PredefStruct->CustomTemplateText.empty();
 }
 
-std::string StructWrapper::GetCustomTemplateText() const
+std::wstring StructWrapper::GetCustomTemplateText() const
 {
     assert(!IsUnrealStruct() && "StructWrapper doesn't contain PredefStruct. Illegal call to 'GetCustomTemplateText()'.");
 

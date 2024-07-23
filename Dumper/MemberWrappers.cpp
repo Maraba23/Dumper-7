@@ -11,12 +11,12 @@ PropertyWrapper::PropertyWrapper(const std::shared_ptr<StructWrapper>& Str, UEPr
 {
 }
 
-std::string PropertyWrapper::GetName() const
+std::wstring PropertyWrapper::GetName() const
 {
     return bIsUnrealProperty ? MemberManager::StringifyName(Struct->GetUnrealStruct(), Name) : PredefProperty->Name;
 }
 
-std::string PropertyWrapper::GetType() const
+std::wstring PropertyWrapper::GetType() const
 {
     assert(!bIsUnrealProperty && "PropertyWrapper doesn't contain UnrealProperty. Illegal call to 'GetNameCollisionInfo()'.");
 
@@ -40,7 +40,7 @@ UEProperty PropertyWrapper::GetUnrealProperty() const
     return Property;
 }
 
-std::string PropertyWrapper::GetDefaultValue() const
+std::wstring PropertyWrapper::GetDefaultValue() const
 {
     assert(!bIsUnrealProperty && "PropertyWrapper doesn't contain PredefiendMember. Illegal call to 'GetDefaultValue()'.");
 
@@ -134,12 +134,12 @@ EPropertyFlags PropertyWrapper::GetPropertyFlags() const
     return bIsUnrealProperty ? Property.GetPropertyFlags() : EPropertyFlags::None;
 }
 
-std::string PropertyWrapper::StringifyFlags() const
+std::wstring PropertyWrapper::StringifyFlags() const
 {
-    return bIsUnrealProperty ? Property.StringifyFlags() : "NoFlags";
+    return bIsUnrealProperty ? Property.StringifyFlags() : L"NoFlags";
 }
 
-std::string PropertyWrapper::GetFlagsOrCustomComment() const
+std::wstring PropertyWrapper::GetFlagsOrCustomComment() const
 {
     return bIsUnrealProperty ? Property.StringifyFlags() : PredefProperty->Comment;
 }
@@ -175,7 +175,7 @@ StructWrapper FunctionWrapper::AsStruct() const
     return StructWrapper(bIsUnrealFunction ? Function : nullptr);
 }
 
-std::string FunctionWrapper::GetName() const
+std::wstring FunctionWrapper::GetName() const
 {
     if (bIsUnrealFunction)
     {
@@ -207,16 +207,16 @@ MemberManager FunctionWrapper::GetMembers() const
     return MemberManager(Function);
 }
 
-std::string FunctionWrapper::StringifyFlags(const char* Seperator) const
+std::wstring FunctionWrapper::StringifyFlags(const wchar_t* Seperator) const
 {
-    return bIsUnrealFunction ? Function.StringifyFlags(Seperator) : "NoFlags";
+    return bIsUnrealFunction ? Function.StringifyFlags(Seperator) : L"NoFlags";
 }
 
-std::string FunctionWrapper::GetParamStructName() const
+std::wstring FunctionWrapper::GetParamStructName() const
 {
     assert(bIsUnrealFunction && "FunctionWrapper doesn't contain UnrealFunction. Illegal call to 'GetParamStructName()'.");
 
-    return Function.GetOuter().GetValidName() + "_" + Function.GetValidName();
+    return Function.GetOuter().GetValidName() + L"_" + Function.GetValidName();
 }
 
 int32  FunctionWrapper::GetParamStructSize() const
@@ -224,58 +224,58 @@ int32  FunctionWrapper::GetParamStructSize() const
     return bIsUnrealFunction ? Function.GetStructSize() : 0x0;
 }
 
-std::string FunctionWrapper::GetPredefFunctionCustomComment() const
+std::wstring FunctionWrapper::GetPredefFunctionCustomComment() const
 {
     assert(!bIsUnrealFunction && "FunctionWrapper doesn't contain PredefinedFunction. Illegal call to 'GetPredefFunctionCustomComment()'.");
 
     return PredefFunction->CustomComment;
 }
 
-std::string FunctionWrapper::GetPredefFunctionCustomTemplateText() const
+std::wstring FunctionWrapper::GetPredefFunctionCustomTemplateText() const
 {
     assert(!bIsUnrealFunction && "FunctionWrapper doesn't contain PredefinedFunction. Illegal call to 'GetPredefFunctionCustomTemplateText()'.");
 
     return PredefFunction->CustomTemplateText;
 }
 
-std::string FunctionWrapper::GetPredefFuncNameWithParams() const
+std::wstring FunctionWrapper::GetPredefFuncNameWithParams() const
 {
     assert(!bIsUnrealFunction && "FunctionWrapper doesn't contain PredefinedFunction. Illegal call to 'GetPredefFuncNameWithParams()'.");
 
     return PredefFunction->NameWithParams;
 }
 
-std::string FunctionWrapper::GetPredefFuncNameWithParamsForCppFile() const
+std::wstring FunctionWrapper::GetPredefFuncNameWithParamsForCppFile() const
 {
     assert(!bIsUnrealFunction && "FunctionWrapper doesn't contain PredefinedFunction. Illegal call to 'GetPredefFuncNameWithParamsForCppFile()'.");
 
     return !PredefFunction->NameWithParamsWithoutDefaults.empty() ? PredefFunction->NameWithParamsWithoutDefaults : PredefFunction->NameWithParams;
 }
 
-std::string FunctionWrapper::GetPredefFuncReturnType() const
+std::wstring FunctionWrapper::GetPredefFuncReturnType() const
 {
     assert(!bIsUnrealFunction && "FunctionWrapper doesn't contain PredefinedFunction. Illegal call to 'GetPredefFuncReturnType()'.");
 
     return PredefFunction->ReturnType;
 }
 
-std::string FunctionWrapper::GetPredefFunctionBody() const
+std::wstring FunctionWrapper::GetPredefFunctionBody() const
 {
     assert(!bIsUnrealFunction && "FunctionWrapper doesn't contain PredefinedFunction. Illegal call to 'GetPredefFunctionBodyRef()'.");
 
     return PredefFunction->Body;
 }
 
-std::string FunctionWrapper::GetPredefFunctionInlineBody() const
+std::wstring FunctionWrapper::GetPredefFunctionInlineBody() const
 {
     assert(!bIsUnrealFunction && "FunctionWrapper doesn't contain PredefinedFunction. Illegal call to 'GetPredefFunctionBodyRef()'.");
 
-    std::string BodyCopy = PredefFunction->Body;
+    std::wstring BodyCopy = PredefFunction->Body;
 
     for (int i = 0; i < BodyCopy.size(); i++)
     {
-        if (BodyCopy[i] == '\n')
-            BodyCopy.insert(++i, "\t");
+        if (BodyCopy[i] == L'\n')
+            BodyCopy.insert(++i, L"\t");
     }
 
     return BodyCopy;

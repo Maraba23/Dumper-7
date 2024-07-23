@@ -105,9 +105,9 @@ public:
 	int32 GetIndex() const;
 
 	/* Returns a pair of name and CollisionCount */
-	std::string GetName() const;
+	std::wstring GetName() const;
 	const StringEntry& GetNameEntry() const;
-	std::pair<std::string, uint8> GetNameCollisionPair() const;
+	std::pair<std::wstring, uint8> GetNameCollisionPair() const;
 
 	bool HasClasses() const;
 	bool HasStructs() const;
@@ -264,7 +264,7 @@ public:
 		return PackageInfos;
 	}
 
-	static inline std::string GetName(int32 PackageIndex)
+	static inline std::wstring GetName(int32 PackageIndex)
 	{
 		 return GetInfo(PackageIndex).GetName();
 	}

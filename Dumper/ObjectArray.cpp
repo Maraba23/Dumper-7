@@ -106,7 +106,7 @@ uint8* ObjectArray::GObjects = nullptr;
 uint32 ObjectArray::NumElementsPerChunk = 0x10000;
 uint32 ObjectArray::SizeOfFUObjectItem = 0x18;
 uint32 ObjectArray::FUObjectItemInitialOffset = 0x0;
-std::string ObjectArray::DecryptionLambdaStr = "";
+std::wstring ObjectArray::DecryptionLambdaStr = L"";
 
 void ObjectArray::InitializeFUObjectItem(uint8_t* FirstItemPtr)
 {
@@ -135,7 +135,7 @@ void ObjectArray::InitializeFUObjectItem(uint8_t* FirstItemPtr)
 	Off::InSDK::ObjArray::FUObjectItemSize = SizeOfFUObjectItem;
 }
 
-void ObjectArray::InitDecryption(uint8_t* (*DecryptionFunction)(void* ObjPtr), const char* DecryptionLambdaAsStr)
+void ObjectArray::InitDecryption(uint8_t* (*DecryptionFunction)(void* ObjPtr), const wchar_t* DecryptionLambdaAsStr)
 {
 	DecryptPtr = DecryptionFunction;
 	DecryptionLambdaStr = DecryptionLambdaAsStr;
@@ -175,7 +175,7 @@ void ObjectArray::InitializeChunkSize(uint8_t* ChunksPtr)
 void ObjectArray::Init(bool bScanAllMemory)
 {
 	if (!bScanAllMemory)
-		std::cout << "\nDumper-7 by me, you & him\n\n\n";
+		std::wcout << L"\nDumper-7 by me, you & him\n\n\n";
 
 	const auto [ImageBase, ImageSize] = GetImageBaseAndSize();
 
@@ -201,7 +201,7 @@ void ObjectArray::Init(bool bScanAllMemory)
 	SearchRange -= 0x50;
 
 	if (!bScanAllMemory)
-		std::cout << "Searching for GObjects...\n\n";
+		std::wcout << L"Searching for GObjects...\n\n";
 
 	for (int i = 0; i < SearchRange; i += 0x4)
 	{
@@ -216,7 +216,7 @@ void ObjectArray::Init(bool bScanAllMemory)
 
 			Off::InSDK::ObjArray::GObjects = (SearchBase + i) - ImageBase;
 
-			std::cout << "Found FFixedUObjectArray GObjects at offset 0x" << std::hex << Off::InSDK::ObjArray::GObjects << std::dec << "\n\n";
+			std::wcout << L"Found FFixedUObjectArray GObjects at offset 0x" << std::hex << Off::InSDK::ObjArray::GObjects << std::dec << L"\n\n";
 
 			ByIndex = [](void* ObjectsArray, int32 Index, uint32 FUObjectItemSize, uint32 FUObjectItemOffset, uint32 PerChunk) -> void*
 			{
@@ -244,7 +244,7 @@ void ObjectArray::Init(bool bScanAllMemory)
 
 			Off::InSDK::ObjArray::GObjects = (SearchBase + i) - ImageBase;
 
-			std::cout << "Found FChunkedFixedUObjectArray GObjects at offset 0x" << std::hex << Off::InSDK::ObjArray::GObjects << std::dec << "\n\n";
+			std::wcout << L"Found FChunkedFixedUObjectArray GObjects at offset 0x" << std::hex << Off::InSDK::ObjArray::GObjects << std::dec << L"\n\n";
 
 			ByIndex = [](void* ObjectsArray, int32 Index, uint32 FUObjectItemSize, uint32 FUObjectItemOffset, uint32 PerChunk) -> void*
 			{
@@ -280,7 +280,7 @@ void ObjectArray::Init(bool bScanAllMemory)
 
 	if (!bScanAllMemory)
 	{
-		std::cout << "\nGObjects couldn't be found!\n\n\n";
+		std::wcout << L"\nGObjects couldn't be found!\n\n\n";
 		Sleep(3000);
 		exit(1);
 	}
@@ -292,7 +292,7 @@ void ObjectArray::Init(int32 GObjectsOffset, int32 ElementsPerChunk, bool bIsChu
 
 	Off::InSDK::ObjArray::GObjects = GObjectsOffset;
 
-	std::cout << "GObjects: 0x" << (void*)GObjects << "\n" << std::endl;
+	std::wcout << L"GObjects: 0x" << (void*)GObjects << L"\n" << std::endl;
 
 	if (!bIsChunked)
 	{
@@ -341,21 +341,21 @@ void ObjectArray::Init(int32 GObjectsOffset, int32 ElementsPerChunk, bool bIsChu
 
 void ObjectArray::DumpObjects(const fs::path& Path, bool bWithPathname)
 {
-	std::ofstream DumpStream(Path / "GObjects-Dump.txt");
+	std::wofstream DumpStream(Path / "GObjects-Dump.txt");
 
-	DumpStream << "Object dump by Dumper-7\n\n";
-	DumpStream << (!Settings::Generator::GameVersion.empty() && !Settings::Generator::GameName.empty() ? (Settings::Generator::GameVersion + '-' + Settings::Generator::GameName) + "\n\n" : "");
-	DumpStream << "Count: " << Num() << "\n\n\n";
+	DumpStream << L"Object dump by Dumper-7\n\n";
+	DumpStream << (!Settings::Generator::GameVersion.empty() && !Settings::Generator::GameName.empty() ? (Settings::Generator::GameVersion + L'-' + Settings::Generator::GameName) + L"\n\n" : L"");
+	DumpStream << L"Count: L" << Num() << L"\n\n\n";
 
 	for (auto Object : ObjectArray())
 	{
 		if (!bWithPathname)
 		{
-			DumpStream << std::format("[{:08X}] {{{}}} {}\n", Object.GetIndex(), Object.GetAddress(), Object.GetFullName());
+			DumpStream << std::format(L"[{:08X}] {{{}}} {}\n", Object.GetIndex(), Object.GetAddress(), Object.GetFullName());
 		}
 		else
 		{
-			DumpStream << std::format("[{:08X}] {{{}}} {}\n", Object.GetIndex(), Object.GetAddress(), Object.GetPathName());
+			DumpStream << std::format(L"[{:08X}] {{{}}} {}\n", Object.GetIndex(), Object.GetAddress(), Object.GetPathName());
 		}
 	}
 
@@ -375,7 +375,7 @@ static UEType ObjectArray::GetByIndex(int32 Index)
 }
 
 template<typename UEType>
-UEType ObjectArray::FindObject(std::string FullName, EClassCastFlags RequiredType)
+UEType ObjectArray::FindObject(std::wstring FullName, EClassCastFlags RequiredType)
 {
 	for (UEObject Object : ObjectArray())
 	{
@@ -389,7 +389,7 @@ UEType ObjectArray::FindObject(std::string FullName, EClassCastFlags RequiredTyp
 }
 
 template<typename UEType>
-UEType ObjectArray::FindObjectFast(std::string Name, EClassCastFlags RequiredType)
+UEType ObjectArray::FindObjectFast(std::wstring Name, EClassCastFlags RequiredType)
 {
 	auto ObjArray = ObjectArray();
 
@@ -405,7 +405,7 @@ UEType ObjectArray::FindObjectFast(std::string Name, EClassCastFlags RequiredTyp
 }
 
 template<typename UEType>
-static UEType ObjectArray::FindObjectFastInOuter(std::string Name, std::string Outer)
+static UEType ObjectArray::FindObjectFastInOuter(std::wstring Name, std::wstring Outer)
 {
 	auto ObjArray = ObjectArray();
 
@@ -420,12 +420,12 @@ static UEType ObjectArray::FindObjectFastInOuter(std::string Name, std::string O
 	return UEType();
 }
 
-UEClass ObjectArray::FindClass(std::string FullName)
+UEClass ObjectArray::FindClass(std::wstring FullName)
 {
 	return FindObject<UEClass>(FullName, EClassCastFlags::Class);
 }
 
-UEClass ObjectArray::FindClassFast(std::string Name)
+UEClass ObjectArray::FindClassFast(std::wstring Name)
 {
 	return FindObjectFast<UEClass>(Name, EClassCastFlags::Class);
 }
@@ -483,56 +483,56 @@ int32 ObjectArray::ObjectsIterator::GetIndex() const
 */
 [[maybe_unused]] void TemplateTypeCreationForObjectArray(void)
 {
-	ObjectArray::FindObject<UEObject>("");
-	ObjectArray::FindObject<UEField>("");
-	ObjectArray::FindObject<UEEnum>("");
-	ObjectArray::FindObject<UEStruct>("");
-	ObjectArray::FindObject<UEClass>("");
-	ObjectArray::FindObject<UEFunction>("");
-	ObjectArray::FindObject<UEProperty>("");
-	ObjectArray::FindObject<UEByteProperty>("");
-	ObjectArray::FindObject<UEBoolProperty>("");
-	ObjectArray::FindObject<UEObjectProperty>("");
-	ObjectArray::FindObject<UEClassProperty>("");
-	ObjectArray::FindObject<UEStructProperty>("");
-	ObjectArray::FindObject<UEArrayProperty>("");
-	ObjectArray::FindObject<UEMapProperty>("");
-	ObjectArray::FindObject<UESetProperty>("");
-	ObjectArray::FindObject<UEEnumProperty>("");
+	ObjectArray::FindObject<UEObject>(L"");
+	ObjectArray::FindObject<UEField>(L"");
+	ObjectArray::FindObject<UEEnum>(L"");
+	ObjectArray::FindObject<UEStruct>(L"");
+	ObjectArray::FindObject<UEClass>(L"");
+	ObjectArray::FindObject<UEFunction>(L"");
+	ObjectArray::FindObject<UEProperty>(L"");
+	ObjectArray::FindObject<UEByteProperty>(L"");
+	ObjectArray::FindObject<UEBoolProperty>(L"");
+	ObjectArray::FindObject<UEObjectProperty>(L"");
+	ObjectArray::FindObject<UEClassProperty>(L"");
+	ObjectArray::FindObject<UEStructProperty>(L"");
+	ObjectArray::FindObject<UEArrayProperty>(L"");
+	ObjectArray::FindObject<UEMapProperty>(L"");
+	ObjectArray::FindObject<UESetProperty>(L"");
+	ObjectArray::FindObject<UEEnumProperty>(L"");
 
-	ObjectArray::FindObjectFast<UEObject>("");
-	ObjectArray::FindObjectFast<UEField>("");
-	ObjectArray::FindObjectFast<UEEnum>("");
-	ObjectArray::FindObjectFast<UEStruct>("");
-	ObjectArray::FindObjectFast<UEClass>("");
-	ObjectArray::FindObjectFast<UEFunction>("");
-	ObjectArray::FindObjectFast<UEProperty>("");
-	ObjectArray::FindObjectFast<UEByteProperty>("");
-	ObjectArray::FindObjectFast<UEBoolProperty>("");
-	ObjectArray::FindObjectFast<UEObjectProperty>("");
-	ObjectArray::FindObjectFast<UEClassProperty>("");
-	ObjectArray::FindObjectFast<UEStructProperty>("");
-	ObjectArray::FindObjectFast<UEArrayProperty>("");
-	ObjectArray::FindObjectFast<UEMapProperty>("");
-	ObjectArray::FindObjectFast<UESetProperty>("");
-	ObjectArray::FindObjectFast<UEEnumProperty>("");
+	ObjectArray::FindObjectFast<UEObject>(L"");
+	ObjectArray::FindObjectFast<UEField>(L"");
+	ObjectArray::FindObjectFast<UEEnum>(L"");
+	ObjectArray::FindObjectFast<UEStruct>(L"");
+	ObjectArray::FindObjectFast<UEClass>(L"");
+	ObjectArray::FindObjectFast<UEFunction>(L"");
+	ObjectArray::FindObjectFast<UEProperty>(L"");
+	ObjectArray::FindObjectFast<UEByteProperty>(L"");
+	ObjectArray::FindObjectFast<UEBoolProperty>(L"");
+	ObjectArray::FindObjectFast<UEObjectProperty>(L"");
+	ObjectArray::FindObjectFast<UEClassProperty>(L"");
+	ObjectArray::FindObjectFast<UEStructProperty>(L"");
+	ObjectArray::FindObjectFast<UEArrayProperty>(L"");
+	ObjectArray::FindObjectFast<UEMapProperty>(L"");
+	ObjectArray::FindObjectFast<UESetProperty>(L"");
+	ObjectArray::FindObjectFast<UEEnumProperty>(L"");
 
-	ObjectArray::FindObjectFastInOuter<UEObject>("", "");
-	ObjectArray::FindObjectFastInOuter<UEField>("", "");
-	ObjectArray::FindObjectFastInOuter<UEEnum>("", "");
-	ObjectArray::FindObjectFastInOuter<UEStruct>("", "");
-	ObjectArray::FindObjectFastInOuter<UEClass>("", "");
-	ObjectArray::FindObjectFastInOuter<UEFunction>("", "");
-	ObjectArray::FindObjectFastInOuter<UEProperty>("", "");
-	ObjectArray::FindObjectFastInOuter<UEByteProperty>("", "");
-	ObjectArray::FindObjectFastInOuter<UEBoolProperty>("", "");
-	ObjectArray::FindObjectFastInOuter<UEObjectProperty>("", "");
-	ObjectArray::FindObjectFastInOuter<UEClassProperty>("", "");
-	ObjectArray::FindObjectFastInOuter<UEStructProperty>("", "");
-	ObjectArray::FindObjectFastInOuter<UEArrayProperty>("", "");
-	ObjectArray::FindObjectFastInOuter<UEMapProperty>("", "");
-	ObjectArray::FindObjectFastInOuter<UESetProperty>("", "");
-	ObjectArray::FindObjectFastInOuter<UEEnumProperty>("", "");
+	ObjectArray::FindObjectFastInOuter<UEObject>(L"", L"");
+	ObjectArray::FindObjectFastInOuter<UEField>(L"", L"");
+	ObjectArray::FindObjectFastInOuter<UEEnum>(L"", L"");
+	ObjectArray::FindObjectFastInOuter<UEStruct>(L"", L"");
+	ObjectArray::FindObjectFastInOuter<UEClass>(L"", L"");
+	ObjectArray::FindObjectFastInOuter<UEFunction>(L"", L"");
+	ObjectArray::FindObjectFastInOuter<UEProperty>(L"", L"");
+	ObjectArray::FindObjectFastInOuter<UEByteProperty>(L"", L"");
+	ObjectArray::FindObjectFastInOuter<UEBoolProperty>(L"", L"");
+	ObjectArray::FindObjectFastInOuter<UEObjectProperty>(L"", L"");
+	ObjectArray::FindObjectFastInOuter<UEClassProperty>(L"", L"");
+	ObjectArray::FindObjectFastInOuter<UEStructProperty>(L"", L"");
+	ObjectArray::FindObjectFastInOuter<UEArrayProperty>(L"", L"");
+	ObjectArray::FindObjectFastInOuter<UEMapProperty>(L"", L"");
+	ObjectArray::FindObjectFastInOuter<UESetProperty>(L"", L"");
+	ObjectArray::FindObjectFastInOuter<UEEnumProperty>(L"", L"");
 
 	ObjectArray::GetByIndex<UEObject>(-1);
 	ObjectArray::GetByIndex<UEField>(-1);

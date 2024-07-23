@@ -25,19 +25,19 @@ namespace EnumInitHelper
 	}
 }
 
-std::string EnumCollisionInfo::GetUniqueName() const
+std::wstring EnumCollisionInfo::GetUniqueName() const
 {
-	const std::string Name = EnumManager::GetValueName(*this).GetName();
+	const std::wstring Name = EnumManager::GetValueName(*this).GetWideName();
 
 	if (CollisionCount > 0)
-		return Name + "_" + std::to_string(CollisionCount - 1);
+		return Name + L"_" + std::to_wstring(CollisionCount - 1);
 
 	return Name;
 }
 
-std::string EnumCollisionInfo::GetRawName() const
+std::wstring EnumCollisionInfo::GetRawName() const
 {
-	return EnumManager::GetValueName(*this).GetName();
+	return EnumManager::GetValueName(*this).GetWideName();
 }
 
 uint64 EnumCollisionInfo::GetValue() const
@@ -144,12 +144,12 @@ void EnumManager::InitInternal()
 			{
 				auto& [Name, Value] = NameValuePairs[i];
 
-				std::string NameWitPrefix = Name.ToString();
+				std::wstring NameWitPrefix = Name.ToString();
 
-				if (!NameWitPrefix.ends_with("_MAX"))
+				if (!NameWitPrefix.ends_with(L"_MAX"))
 					EnumMaxValue = max(EnumMaxValue, Value);
 
-				auto [NameIndex, bWasInserted] = UniqueEnumValueNames.FindOrAdd(MakeNameValid(NameWitPrefix.substr(NameWitPrefix.find_last_of("::") + 1)));
+				auto [NameIndex, bWasInserted] = UniqueEnumValueNames.FindOrAdd(MakeNameValid(NameWitPrefix.substr(NameWitPrefix.find_last_of(L"::") + 1)));
 
 				EnumCollisionInfo CurrentEnumValueInfo;
 				CurrentEnumValueInfo.MemberName = NameIndex;
@@ -199,16 +199,16 @@ void EnumManager::InitInternal()
 
 void EnumManager::InitIllegalNames()
 {
-	IllegalNames.push_back(UniqueEnumValueNames.FindOrAdd("IN").first);
-	IllegalNames.push_back(UniqueEnumValueNames.FindOrAdd("OUT").first);
-	IllegalNames.push_back(UniqueEnumValueNames.FindOrAdd("TRUE").first);
-	IllegalNames.push_back(UniqueEnumValueNames.FindOrAdd("FALSE").first);
-	IllegalNames.push_back(UniqueEnumValueNames.FindOrAdd("PF_MAX").first);
-	IllegalNames.push_back(UniqueEnumValueNames.FindOrAdd("SW_MAX").first);
-	IllegalNames.push_back(UniqueEnumValueNames.FindOrAdd("MM_MAX").first);
-	IllegalNames.push_back(UniqueEnumValueNames.FindOrAdd("SIZE_MAX").first);
-	IllegalNames.push_back(UniqueEnumValueNames.FindOrAdd("RELATIVE").first);
-	IllegalNames.push_back(UniqueEnumValueNames.FindOrAdd("TRANSPARENT").first);
+	IllegalNames.push_back(UniqueEnumValueNames.FindOrAdd(L"IN").first);
+	IllegalNames.push_back(UniqueEnumValueNames.FindOrAdd(L"OUT").first);
+	IllegalNames.push_back(UniqueEnumValueNames.FindOrAdd(L"TRUE").first);
+	IllegalNames.push_back(UniqueEnumValueNames.FindOrAdd(L"FALSE").first);
+	IllegalNames.push_back(UniqueEnumValueNames.FindOrAdd(L"PF_MAX").first);
+	IllegalNames.push_back(UniqueEnumValueNames.FindOrAdd(L"SW_MAX").first);
+	IllegalNames.push_back(UniqueEnumValueNames.FindOrAdd(L"MM_MAX").first);
+	IllegalNames.push_back(UniqueEnumValueNames.FindOrAdd(L"SIZE_MAX").first);
+	IllegalNames.push_back(UniqueEnumValueNames.FindOrAdd(L"RELATIVE").first);
+	IllegalNames.push_back(UniqueEnumValueNames.FindOrAdd(L"TRANSPARENT").first);
 }
 
 void EnumManager::Init()

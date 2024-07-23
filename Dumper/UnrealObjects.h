@@ -42,9 +42,9 @@ public:
 
 	bool IsType(EClassCastFlags Flags) const;
 
-	std::string GetName() const;
-	std::string GetValidName() const;
-	std::string GetCppName() const;
+	std::wstring GetName() const;
+	std::wstring GetValidName() const;
+	std::wstring GetCppName() const;
 };
 
 class UEFField
@@ -82,9 +82,9 @@ public:
 	bool IsOwnerUObject() const;
 	bool IsA(EClassCastFlags Flags) const;
 
-	std::string GetName() const;
-	std::string GetValidName() const;
-	std::string GetCppName() const;
+	std::wstring GetName() const;
+	std::wstring GetValidName() const;
+	std::wstring GetCppName() const;
 
 	explicit operator bool() const;
 	bool operator==(const UEFField& Other) const;
@@ -128,15 +128,15 @@ public:
 
 	UEObject GetOutermost() const;
 
-	std::string StringifyObjFlags() const;
+	std::wstring StringifyObjFlags() const;
 
-	std::string GetName() const;
-	std::string GetNameWithPath() const;
-	std::string GetValidName() const;
-	std::string GetCppName() const;
-	std::string GetFullName(int32& OutNameLength) const;
-	std::string GetFullName() const;
-	std::string GetPathName() const;
+	std::wstring GetName() const;
+	std::wstring GetNameWithPath() const;
+	std::wstring GetValidName() const;
+	std::wstring GetCppName() const;
+	std::wstring GetFullName(int32& OutNameLength) const;
+	std::wstring GetFullName() const;
+	std::wstring GetPathName() const;
 
 	explicit operator bool() const;
 	explicit operator uint8*();
@@ -176,9 +176,9 @@ public:
 	EEnumFlags GetEnumFlags() const;
 
 	std::vector<std::pair<FName, int64>> GetNameValuePairs() const;
-	std::string GetSingleName(int32 Index) const;
-	std::string GetEnumPrefixedName() const;
-	std::string GetEnumTypeAsStr() const;
+	std::wstring GetSingleName(int32 Index) const;
+	std::wstring GetEnumPrefixedName() const;
+	std::wstring GetEnumTypeAsStr() const;
 };
 
 class UEStruct : public UEField
@@ -196,7 +196,7 @@ public:
 	std::vector<UEFunction> GetFunctions() const;
 
 
-	UEProperty FindMember(const std::string& MemberName, EClassCastFlags TypeFlags = EClassCastFlags::None) const;
+	UEProperty FindMember(const std::wstring& MemberName, EClassCastFlags TypeFlags = EClassCastFlags::None) const;
 
 	bool HasMembers() const;
 };
@@ -213,8 +213,8 @@ public:
 
 	UEProperty GetReturnProperty() const;
 
-	std::string StringifyFlags(const char* Seperator = ", ") const;
-	std::string GetParamStructName() const;
+	std::wstring StringifyFlags(const wchar_t* Seperator = L", L") const;
+	std::wstring GetParamStructName() const;
 };
 
 class UEClass : public UEStruct
@@ -223,12 +223,12 @@ class UEClass : public UEStruct
 
 public:
 	EClassCastFlags GetCastFlags() const;
-	std::string StringifyCastFlags() const;
+	std::wstring StringifyCastFlags() const;
 	bool IsType(EClassCastFlags TypeFlag) const;
 	bool HasType(UEClass TypeClass) const;
 	UEObject GetDefaultObject() const;
 
-	UEFunction GetFunction(const std::string& ClassName, const std::string& FuncName) const;
+	UEFunction GetFunction(const std::wstring& ClassName, const std::wstring& FuncName) const;
 };
 
 class UEProperty
@@ -265,12 +265,12 @@ public:
 
 	int32 GetAlignment() const;
 
-	std::string GetName() const;
-	std::string GetValidName() const;
+	std::wstring GetName() const;
+	std::wstring GetValidName() const;
 
-	std::string GetCppType() const;
+	std::wstring GetCppType() const;
 
-	std::string StringifyFlags() const;
+	std::wstring StringifyFlags() const;
 
 public:
 	template<typename UEType>
@@ -293,7 +293,7 @@ class UEByteProperty : public UEProperty
 public:
 	UEEnum GetEnum() const;
 
-	std::string GetCppType() const;
+	std::wstring GetCppType() const;
 };
 
 class UEBoolProperty : public UEProperty
@@ -305,7 +305,7 @@ public:
 	uint8 GetBitIndex() const;
 	bool IsNativeBool() const;
 
-	std::string GetCppType() const;
+	std::wstring GetCppType() const;
 };
 
 class UEObjectProperty : public UEProperty
@@ -315,7 +315,7 @@ class UEObjectProperty : public UEProperty
 public:
 	UEClass GetPropertyClass() const;
 
-	std::string GetCppType() const;
+	std::wstring GetCppType() const;
 };
 
 class UEClassProperty : public UEObjectProperty
@@ -325,7 +325,7 @@ class UEClassProperty : public UEObjectProperty
 public:
 	UEClass GetMetaClass() const;
 
-	std::string GetCppType() const;
+	std::wstring GetCppType() const;
 };
 
 class UEWeakObjectProperty : public UEObjectProperty
@@ -333,7 +333,7 @@ class UEWeakObjectProperty : public UEObjectProperty
 	using UEObjectProperty::UEObjectProperty;
 
 public:
-	std::string GetCppType() const;
+	std::wstring GetCppType() const;
 };
 
 class UELazyObjectProperty : public UEObjectProperty
@@ -341,7 +341,7 @@ class UELazyObjectProperty : public UEObjectProperty
 	using UEObjectProperty::UEObjectProperty;
 
 public:
-	std::string GetCppType() const;
+	std::wstring GetCppType() const;
 };
 
 class UESoftObjectProperty : public UEObjectProperty
@@ -349,7 +349,7 @@ class UESoftObjectProperty : public UEObjectProperty
 	using UEObjectProperty::UEObjectProperty;
 
 public:
-	std::string GetCppType() const;
+	std::wstring GetCppType() const;
 };
 
 class UESoftClassProperty : public UEClassProperty
@@ -357,7 +357,7 @@ class UESoftClassProperty : public UEClassProperty
 	using UEClassProperty::UEClassProperty;
 
 public:
-	std::string GetCppType() const;
+	std::wstring GetCppType() const;
 };
 
 class UEInterfaceProperty : public UEObjectProperty
@@ -365,7 +365,7 @@ class UEInterfaceProperty : public UEObjectProperty
 	using UEObjectProperty::UEObjectProperty;
 
 public:
-	std::string GetCppType() const;
+	std::wstring GetCppType() const;
 };
 
 class UEStructProperty : public UEProperty
@@ -375,7 +375,7 @@ class UEStructProperty : public UEProperty
 public:
 	UEStruct GetUnderlayingStruct() const;
 
-	std::string GetCppType() const;
+	std::wstring GetCppType() const;
 };
 
 class UEArrayProperty : public UEProperty
@@ -385,7 +385,7 @@ class UEArrayProperty : public UEProperty
 public:
 	UEProperty GetInnerProperty() const;
 
-	std::string GetCppType() const;
+	std::wstring GetCppType() const;
 };
 
 class UEDelegateProperty : public UEProperty
@@ -395,7 +395,7 @@ class UEDelegateProperty : public UEProperty
 public:
 	UEFunction GetSignatureFunction() const;
 
-	std::string GetCppType() const;
+	std::wstring GetCppType() const;
 };
 
 class UEMapProperty : public UEProperty
@@ -406,7 +406,7 @@ public:
 	UEProperty GetKeyProperty() const;
 	UEProperty GetValueProperty() const;
 
-	std::string GetCppType() const;
+	std::wstring GetCppType() const;
 };
 
 class UESetProperty : public UEProperty
@@ -416,7 +416,7 @@ class UESetProperty : public UEProperty
 public:
 	UEProperty GetElementProperty() const;
 
-	std::string GetCppType() const;
+	std::wstring GetCppType() const;
 };
 
 class UEEnumProperty : public UEProperty
@@ -427,7 +427,7 @@ public:
 	UEProperty GetUnderlayingProperty() const;
 	UEEnum GetEnum() const;
 
-	std::string GetCppType() const;
+	std::wstring GetCppType() const;
 };
 
 class UEFieldPathProperty : public UEProperty
@@ -437,7 +437,7 @@ class UEFieldPathProperty : public UEProperty
 public:
 	UEFFieldClass GetFielClass() const;
 
-	std::string GetCppType() const;
+	std::wstring GetCppType() const;
 };
 
 class UEOptionalProperty : public UEProperty
@@ -447,6 +447,6 @@ class UEOptionalProperty : public UEProperty
 public:
 	UEProperty GetValueProperty() const;
 
-	std::string GetCppType() const;
+	std::wstring GetCppType() const;
 };
 

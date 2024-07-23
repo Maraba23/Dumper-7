@@ -3,9 +3,9 @@
 #include <fstream>
 
 
-std::string IDAMappingGenerator::MangleFunctionName(const std::string& ClassName, const std::string& FunctionName)
+std::wstring IDAMappingGenerator::MangleFunctionName(const std::wstring& ClassName, const std::wstring& FunctionName)
 {
-	return "_ZN" + std::to_string(ClassName.length()) + ClassName + std::to_string(FunctionName.length() + 4) + "exec" + FunctionName + "Ev";
+	return L"_ZN" + std::to_wstring(ClassName.length()) + ClassName + std::to_wstring(FunctionName.length() + 4) + L"exec" + FunctionName + L"Ev";
 }
 
 void IDAMappingGenerator::WriteReadMe(StreamType& ReadMe)
@@ -45,7 +45,7 @@ void IDAMappingGenerator::GenerateVTableName(StreamType& IdmapFile, UEObject Def
 	if (Super && DefaultObject.GetVft() == Super.GetDefaultObject().GetVft())
 		return;
 
-	std::string Name = Class.GetCppName() + "_VFT";
+	std::wstring Name = Class.GetCppName() + L"_VFT";
 
 	uint32 Offset = static_cast<uint32>(GetOffset(DefaultObject.GetVft()));
 	uint16 NameLen = static_cast<uint16>(Name.length());
@@ -57,14 +57,14 @@ void IDAMappingGenerator::GenerateVTableName(StreamType& IdmapFile, UEObject Def
 
 void IDAMappingGenerator::GenerateClassFunctions(StreamType& IdmapFile, UEClass Class)
 {
-	static std::unordered_map<uint32, std::string> Funcs;
+	static std::unordered_map<uint32, std::wstring> Funcs;
 
 	for (UEFunction Func : Class.GetFunctions())
 	{
 		if (!Func.HasFlags(EFunctionFlags::Native))
 			continue;
 
-		std::string MangledName = MangleFunctionName(Class.GetCppName(), Func.GetValidName());
+		std::wstring MangledName = MangleFunctionName(Class.GetCppName(), Func.GetValidName());
 
 		uint32 Offset = static_cast<uint32>(GetOffset(Func.GetExecFunction()));
 		uint16 NameLen = static_cast<uint16>(MangledName.length());
@@ -73,7 +73,7 @@ void IDAMappingGenerator::GenerateClassFunctions(StreamType& IdmapFile, UEClass 
 
 		if (!bInseted)
 		{
-			//std::cout << "Collision: \nOld: " << It->second << "\nNew: " << Func.GetFullName() << "\n" << std::endl;
+			//std::wcout << L"Collision: \nOld: L" << It->second << L"\nNew: L" << Func.GetFullName() << L"\n" << std::endl;
 			continue;
 		}
 
@@ -85,15 +85,15 @@ void IDAMappingGenerator::GenerateClassFunctions(StreamType& IdmapFile, UEClass 
 
 void IDAMappingGenerator::Generate()
 {
-	std::string IdaMappingFileName = (Settings::Generator::GameVersion + '-' + Settings::Generator::GameName + ".idmap");
+	std::wstring IdaMappingFileName = (Settings::Generator::GameVersion + L'-' + Settings::Generator::GameName + L".idmap");
 
 	FileNameHelper::MakeValidFileName(IdaMappingFileName);
 
 	/* Open the stream as binary data, else ofstream will add \r after numbers that can be interpreted as \n. */
-	std::ofstream IdmapFile(MainFolder / IdaMappingFileName, std::ios::binary);
+	std::wofstream IdmapFile(MainFolder / IdaMappingFileName, std::ios::binary);
 
 	/* Create a ReadMe to describe what '.idmap' is, and how to use it */
-	std::ofstream ReadMe(MainFolder / "ReadMe.txt");
+	std::wofstream ReadMe(MainFolder / "ReadMe.txt");
 
 	/* Write description of the file format, as well as a link to the IDA-Plugin */
 	WriteReadMe(ReadMe);
@@ -102,7 +102,7 @@ void IDAMappingGenerator::Generate()
 	{
 		if (Obj.HasAnyFlags(EObjectFlags::ClassDefaultObject))
 		{
-			/* Gets the VTable offset from the default object and writes the ClassName + "_VFT" postfix to the file */
+			/* Gets the VTable offset from the default object and writes the ClassName + L"_VFT" postfix to the file */
 			GenerateVTableName(IdmapFile, Obj);
 		}
 		else if (Obj.IsA(EClassCastFlags::Class))

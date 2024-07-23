@@ -17,9 +17,9 @@ concept GeneratorImplementation = requires(GeneratorType t)
     requires(std::same_as<decltype(GeneratorType::PredefinedMembers), PredefinedMemberLookupMapType>);
 
     GeneratorType::MainFolderName;
-    requires(std::same_as<decltype(GeneratorType::MainFolderName), std::string>);
+    requires(std::same_as<decltype(GeneratorType::MainFolderName), std::wstring>);
     GeneratorType::SubfolderName;
-    requires(std::same_as<decltype(GeneratorType::SubfolderName), std::string>);
+    requires(std::same_as<decltype(GeneratorType::SubfolderName), std::wstring>);
 
     GeneratorType::MainFolder;
     requires(std::same_as<decltype(GeneratorType::MainFolder), fs::path>);
@@ -48,8 +48,8 @@ public:
 private:
     static bool SetupDumperFolder();
 
-    static bool SetupFolders(std::string& FolderName, fs::path& OutFolder);
-    static bool SetupFolders(std::string& FolderName, fs::path& OutFolder, std::string& SubfolderName, fs::path& OutSubFolder);
+    static bool SetupFolders(std::wstring& FolderName, fs::path& OutFolder);
+    static bool SetupFolders(std::wstring& FolderName, fs::path& OutFolder, std::wstring& SubfolderName, fs::path& OutSubFolder);
 
 public:
     template<GeneratorImplementation GeneratorType>

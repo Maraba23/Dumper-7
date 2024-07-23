@@ -1048,10 +1048,19 @@ namespace FileNameHelper
 {
 	inline void MakeValidFileName(std::string& InOutName)
 	{
-		for (char& c : InOutName)
+		for (auto& c : InOutName)
 		{
 			if (c == '<' || c == '>' || c == ':' || c == '\"' || c == '/' || c == '\\' || c == '|' || c == '?' || c == '*')
 				c = '_';
+		}
+	}
+
+	inline void MakeValidFileName(std::wstring& InOutName)
+	{
+		for (auto& c : InOutName)
+		{
+			if (c == L'<' || c == L'>' || c == L':' || c == L'\"' || c == L'/' || c == L'\\' || c == L'|' || c == L'?' || c == L'*')
+				c = L'_';
 		}
 	}
 }

@@ -100,8 +100,8 @@ private:
 public:
     static inline PredefinedMemberLookupMapType PredefinedMembers;
 
-    static inline std::string MainFolderName = "Mappings";
-    static inline std::string SubfolderName = "";
+    static inline std::wstring MainFolderName = L"Mappings";
+    static inline std::wstring SubfolderName = L"";
 
     static inline fs::path MainFolder;
     static inline fs::path Subfolder;
@@ -122,7 +122,7 @@ private:
 private:
     /* Utility Functions */
     static EMappingsTypeFlags GetMappingType(UEProperty Property);
-    static int32 AddNameToData(std::stringstream& NameTable, const std::string& Name);
+    static int32 AddNameToData(std::stringstream& NameTable, const std::wstring& Name);
 
 private:
     static void GeneratePropertyType(UEProperty Property, std::stringstream& Data, std::stringstream& NameTable);

@@ -10,10 +10,10 @@ FNameEntry::FNameEntry(void* Ptr)
 {
 }
 
-std::string FNameEntry::GetString()
+std::wstring FNameEntry::GetString()
 {
 	if (!Address)
-		return "";
+		return L"";
 
 	return GetStr(Address);
 }
@@ -30,7 +30,7 @@ void FNameEntry::Init(const uint8_t* FirstChunkPtr, int64 NameEntryStringOffset)
 		constexpr int64 NoneStrLen = 0x4;
 		constexpr uint16 BytePropertyStrLen = 0xC;
 
-		constexpr uint32 BytePropertyStartAsUint32 = 'etyB'; // "Byte" part of "ByteProperty"
+		constexpr uint32 BytePropertyStartAsUint32 = L'etyB'; // "Byte" part of "ByteProperty"
 
 		Off::FNameEntry::NamePool::StringOffset = NameEntryStringOffset;
 		Off::FNameEntry::NamePool::HeaderOffset = NameEntryStringOffset == 6 ? 4 : 0;
@@ -61,12 +61,12 @@ void FNameEntry::Init(const uint8_t* FirstChunkPtr, int64 NameEntryStringOffset)
 
 		if (FNameEntryLengthShiftCount == MaxAllowedShiftCount)
 		{
-			std::cout << "\Dumper-7: Error, couldn't get FNameEntryLengthShiftCount!\n" << std::endl;
-			GetStr = [](uint8* NameEntry)->std::string { return "Invalid FNameEntryLengthShiftCount!"; };
+			std::wcout << L"\Dumper-7: Error, couldn't get FNameEntryLengthShiftCount!\n" << std::endl;
+			GetStr = [](uint8* NameEntry)->std::wstring { return L"Invalid FNameEntryLengthShiftCount!"; };
 			return;
 		}
 
-		GetStr = [](uint8* NameEntry) -> std::string
+		GetStr = [](uint8* NameEntry) -> std::wstring
 		{
 			const uint16 HeaderWithoutNumber = *reinterpret_cast<uint16*>(NameEntry + Off::FNameEntry::NamePool::HeaderOffset);
 			const int32 NameLen = HeaderWithoutNumber >> FNameEntry::FNameEntryLengthShiftCount;
@@ -79,7 +79,7 @@ void FNameEntry::Init(const uint8_t* FirstChunkPtr, int64 NameEntryStringOffset)
 				const int32 Number = *reinterpret_cast<int32*>(NameEntry + EntryIdOffset + sizeof(int32));
 
 				if (Number > 0)
-					return NameArray::GetNameEntry(NextEntryIndex).GetString() + "_" + std::to_string(Number - 1);
+					return NameArray::GetNameEntry(NextEntryIndex).GetString() + L"_" + std::to_wstring(Number - 1);
 
 				return NameArray::GetNameEntry(NextEntryIndex).GetString();
 			}
@@ -87,10 +87,10 @@ void FNameEntry::Init(const uint8_t* FirstChunkPtr, int64 NameEntryStringOffset)
 			if (HeaderWithoutNumber & NameWideMask)
 			{
 				std::wstring WString(reinterpret_cast<const wchar_t*>(NameEntry + Off::FNameEntry::NamePool::StringOffset), NameLen);
-				return std::string(WString.begin(), WString.end());
+				return std::wstring(WString.begin(), WString.end());
 			}
 
-			return std::string(reinterpret_cast<const char*>(NameEntry + Off::FNameEntry::NamePool::StringOffset), NameLen);
+			return std::wstring(reinterpret_cast<const wchar_t*>(NameEntry + Off::FNameEntry::NamePool::StringOffset), NameLen);
 		};
 	}
 	else
@@ -101,7 +101,7 @@ void FNameEntry::Init(const uint8_t* FirstChunkPtr, int64 NameEntryStringOffset)
 
 		for (int i = 0; i < 0x20; i++)
 		{
-			if (*reinterpret_cast<uint32*>(FNameEntryNone + i) == 'enoN') // None
+			if (*reinterpret_cast<uint32*>(FNameEntryNone + i) == L'enoN') // None
 			{
 				Off::FNameEntry::NameArray::StringOffset = i;
 				break;
@@ -119,7 +119,7 @@ void FNameEntry::Init(const uint8_t* FirstChunkPtr, int64 NameEntryStringOffset)
 			}
 		}
 
-		GetStr = [](uint8* NameEntry) -> std::string
+		GetStr = [](uint8* NameEntry) -> std::wstring
 		{
 			const int32 NameIdx = *reinterpret_cast<int32*>(NameEntry + Off::FNameEntry::NameArray::IndexOffset);
 			const void* NameString = reinterpret_cast<void*>(NameEntry + Off::FNameEntry::NameArray::StringOffset);
@@ -127,10 +127,10 @@ void FNameEntry::Init(const uint8_t* FirstChunkPtr, int64 NameEntryStringOffset)
 			if (NameIdx & NameWideMask)
 			{
 				std::wstring WString(reinterpret_cast<const wchar_t*>(NameString));
-				return std::string(WString.begin(), WString.end());
+				return std::wstring(WString.begin(), WString.end());
 			}
 
-			return reinterpret_cast<const char*>(NameString);
+			return reinterpret_cast<const wchar_t*>(NameString);
 		};
 	}
 }
@@ -249,7 +249,7 @@ bool NameArray::InitializeNamePool(uint8_t* NamePool)
 	constexpr uint64 CoreUObjAsUint64 = 0x6A624F5565726F43; // little endian "jbOUeroC" ["/Script/CoreUObject"]
 	constexpr uint32 NoneAsUint32 = 0x656E6F4E; // little endian "None"
 
-	constexpr int64 CoreUObjectStringLength = sizeof("/S");
+	constexpr int64 CoreUObjectStringLength = sizeof(L"/S");
 
 	uint8_t** ChunkPtr = reinterpret_cast<uint8_t**>(NamePool + Off::NameArray::ChunksStart);
 
@@ -403,7 +403,7 @@ bool NameArray::TryFindNamePool()
 	constexpr int32 BytePropertySearchRange = 0x2A0;
 
 	/* FNamePool::FNamePool contains a call to InitializeSRWLock or RtlInitializeSRWLock, we're going to check for that later */
-	//uintptr_t InitSRWLockAddress = reinterpret_cast<uintptr_t>(GetImportAddress(nullptr, "kernel32.dll", "InitializeSRWLock"));
+	//uintptr_t InitSRWLockAddress = reinterpret_cast<uintptr_t>(GetImportAddress(nullptr, L"kernel32.dll", L"InitializeSRWLock"));
 	uintptr_t InitSRWLockAddress = reinterpret_cast<uintptr_t>(GetAddressOfImportedFunctionFromAnyModule("kernel32.dll", "InitializeSRWLock"));
 	uintptr_t RtlInitSRWLockAddress = reinterpret_cast<uintptr_t>(GetAddressOfImportedFunctionFromAnyModule("ntdll.dll", "RtlInitializeSRWLock"));
 
@@ -454,7 +454,7 @@ bool NameArray::TryFindNamePool()
 
 			/* We couldn't find a wchar_t string L"ByteProperty", now see if we can find a char string "ByteProperty" */
 			if (!StringRef)
-				StringRef = FindByStringInAllSections("ByteProperty", PossibleConstructorAddress, BytePropertySearchRange);
+				StringRef = FindByStringInAllSections(L"ByteProperty", PossibleConstructorAddress, BytePropertySearchRange);
 
 			if (StringRef)
 			{
@@ -485,14 +485,14 @@ bool NameArray::TryInit(bool bIsTestOnly)
 
 	if (NameArray::TryFindNameArray())
 	{
-		std::cout << std::format("Found 'TNameEntryArray GNames' at offset 0x{:X}\n", Off::InSDK::NameArray::GNames) << std::endl;
+		std::wcout << std::format(L"Found 'TNameEntryArray GNames' at offset 0x{:X}\n", Off::InSDK::NameArray::GNames) << std::endl;
 		GNamesAddress = *reinterpret_cast<uint8**>(ImageBase + Off::InSDK::NameArray::GNames);// Derefernce
 		Settings::Internal::bUseNamePool = false;
 		bFoundNameArray = true;
 	}
 	else if (NameArray::TryFindNamePool())
 	{
-		std::cout << std::format("Found 'FNamePool GNames' at offset 0x{:X}\n", Off::InSDK::NameArray::GNames) << std::endl;
+		std::wcout << std::format(L"Found 'FNamePool GNames' at offset 0x{:X}\n", Off::InSDK::NameArray::GNames) << std::endl;
 		GNamesAddress = reinterpret_cast<uint8*>(ImageBase + Off::InSDK::NameArray::GNames); // No derefernce
 		Settings::Internal::bUseNamePool = true;
 		bFoundnamePool = true;
@@ -500,7 +500,7 @@ bool NameArray::TryInit(bool bIsTestOnly)
 
 	if (!bFoundNameArray && !bFoundnamePool)
 	{
-		std::cout << "\n\nCould not find GNames!\n\n" << std::endl;
+		std::wcout << L"\n\nCould not find GNames!\n\n" << std::endl;
 		return false;
 	}
 
@@ -526,7 +526,7 @@ bool NameArray::TryInit(bool bIsTestOnly)
 	//Off::InSDK::NameArray::GNames = 0x0;
 	//Settings::Internal::bUseNamePool = false;
 
-	std::cout << "The address that was found couldn't be used by the generator, this might be due to GNames-encryption.\n" << std::endl;
+	std::wcout << L"The address that was found couldn't be used by the generator, this might be due to GNames-encryption.\n" << std::endl;
 
 	return false;
 }
@@ -548,14 +548,14 @@ bool NameArray::TryInit(int32 OffsetOverride, bool bIsNamePool)
 
 	if (bIsNameArrayOverride)
 	{
-		std::cout << std::format("Overwrote offset: 'TNameEntryArray GNames' set as offset 0x{:X}\n", Off::InSDK::NameArray::GNames) << std::endl;
+		std::wcout << std::format(L"Overwrote offset: 'TNameEntryArray GNames' set as offset 0x{:X}\n", Off::InSDK::NameArray::GNames) << std::endl;
 		GNamesAddress = *reinterpret_cast<uint8**>(ImageBase + Off::InSDK::NameArray::GNames);// Derefernce
 		Settings::Internal::bUseNamePool = false;
 		bFoundNameArray = true;
 	}
 	else if (bIsNamePoolOverride)
 	{
-		std::cout << std::format("Overwrote offset: 'FNamePool GNames' set as offset 0x{:X}\n", Off::InSDK::NameArray::GNames) << std::endl;
+		std::wcout << std::format(L"Overwrote offset: 'FNamePool GNames' set as offset 0x{:X}\n", Off::InSDK::NameArray::GNames) << std::endl;
 		GNamesAddress = reinterpret_cast<uint8*>(ImageBase + Off::InSDK::NameArray::GNames); // No derefernce
 		Settings::Internal::bUseNamePool = true;
 		bFoundnamePool = true;
@@ -563,7 +563,7 @@ bool NameArray::TryInit(int32 OffsetOverride, bool bIsNamePool)
 
 	if (!bFoundNameArray && !bFoundnamePool)
 	{
-		std::cout << "\n\nCould not find GNames!\n\n" << std::endl;
+		std::wcout << L"\n\nCould not find GNames!\n\n" << std::endl;
 		return false;
 	}
 
@@ -582,7 +582,7 @@ bool NameArray::TryInit(int32 OffsetOverride, bool bIsNamePool)
 		return true;
 	}
 
-	std::cout << "The address was overwritten, but couldn't be used. This might be due to GNames-encryption.\n" << std::endl;
+	std::wcout << L"The address was overwritten, but couldn't be used. This might be due to GNames-encryption.\n" << std::endl;
 
 	return false;
 }
@@ -595,18 +595,18 @@ bool NameArray::SetGNamesWithoutCommiting()
 
 	if (NameArray::TryFindNameArray())
 	{
-		std::cout << std::format("Found 'TNameEntryArray GNames' at offset 0x{:X}\n", Off::InSDK::NameArray::GNames) << std::endl;
+		std::wcout << std::format(L"Found 'TNameEntryArray GNames' at offset 0x{:X}\n", Off::InSDK::NameArray::GNames) << std::endl;
 		Settings::Internal::bUseNamePool = false;
 		return true;
 	}
 	else if (NameArray::TryFindNamePool())
 	{
-		std::cout << std::format("Found 'FNamePool GNames' at offset 0x{:X}\n", Off::InSDK::NameArray::GNames) << std::endl;
+		std::wcout << std::format(L"Found 'FNamePool GNames' at offset 0x{:X}\n", Off::InSDK::NameArray::GNames) << std::endl;
 		Settings::Internal::bUseNamePool = true;
 		return true;
 	}
 
-	std::cout << "\n\nCould not find GNames!\n\n" << std::endl;
+	std::wcout << L"\n\nCould not find GNames!\n\n" << std::endl;
 	return false;
 }
 
@@ -646,7 +646,7 @@ void NameArray::PostInit()
 		}
 		Off::InSDK::NameArray::FNamePoolBlockOffsetBits = NameArray::FNameBlockOffsetBits;
 
-		std::cout << "\nNameArray::FNameBlockOffsetBits: 0x" << std::hex << NameArray::FNameBlockOffsetBits << "\n" << std::endl;
+		std::wcout << L"\nNameArray::FNameBlockOffsetBits: 0x" << std::hex << NameArray::FNameBlockOffsetBits << L"\n" << std::endl;
 	}
 }
 

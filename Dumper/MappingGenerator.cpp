@@ -130,11 +130,11 @@ EMappingsTypeFlags MappingGenerator::GetMappingType(UEProperty Property)
 	return EMappingsTypeFlags::Unknown;
 }
 
-int32 MappingGenerator::AddNameToData(std::stringstream& NameTable, const std::string& Name)
+int32 MappingGenerator::AddNameToData(std::stringstream& NameTable, const std::wstring& Name)
 {
 	if constexpr (Settings::MappingGenerator::bShouldCheckForDuplicatedNames)
 	{
-		static std::unordered_map<std::string, int32> NameMap;
+		static std::unordered_map<std::wstring, int32> NameMap;
 		
 		auto [It, bInserted] = NameMap.insert({ Name, NameCounter });
 
@@ -142,7 +142,7 @@ int32 MappingGenerator::AddNameToData(std::stringstream& NameTable, const std::s
 		if (bInserted)
 		{
 			WriteToStream(NameTable, static_cast<uint16>(Name.length()));
-			NameTable.write(Name.c_str(), Name.length());
+			NameTable.write(reinterpret_cast<const char*>(Name.c_str()), Name.length());
 			return NameCounter++;
 		}
 
@@ -150,7 +150,7 @@ int32 MappingGenerator::AddNameToData(std::stringstream& NameTable, const std::s
 	}
 
 	WriteToStream(NameTable, static_cast<uint16>(Name.length()));
-	NameTable.write(Name.c_str(), Name.length());
+	NameTable.write(reinterpret_cast<const char*>(Name.data()), Name.length());
 
 	return NameCounter++;
 }
@@ -215,7 +215,7 @@ void MappingGenerator::GeneratePropertyInfo(const PropertyWrapper& Property, std
 {
 	if (!Property.IsUnrealProperty())
 	{
-		std::cout << "\nInvalid non-Unreal property!\n" << std::endl;
+		std::wcout << L"\nInvalid non-Unreal property!\n" << std::endl;
 		return;
 	}
 
@@ -348,21 +348,21 @@ std::stringstream MappingGenerator::GenerateFileData()
 	WriteToStream(ReturnBuffer, NameData);
 
 	if constexpr (Settings::Debug::bShouldPrintMappingDebugData)
-		std::cout << std::format("MappingGeneration: NameCounter = 0x{0:X} (Dec: {0})\n", static_cast<uint32>(NameCounter));
+		std::wcout << std::format(L"MappingGeneration: NameCounter = 0x{0:X} (Dec: {0})\n", static_cast<uint32>(NameCounter));
 
 	/* Write Enum-count and enums */
 	WriteToStream(ReturnBuffer, static_cast<uint32>(NumEnums));
 	WriteToStream(ReturnBuffer, EnumData);
 
 	if constexpr (Settings::Debug::bShouldPrintMappingDebugData)
-		std::cout << std::format("MappingGeneration: NumEnums = 0x{0:X} (Dec: {0})\n", static_cast<uint32>(NumEnums));
+		std::wcout << std::format(L"MappingGeneration: NumEnums = 0x{0:X} (Dec: {0})\n", static_cast<uint32>(NumEnums));
 
 	/* Write Struct-count and enums */
 	WriteToStream(ReturnBuffer, static_cast<uint32>(NumStructsAndClasse));
 	WriteToStream(ReturnBuffer, StructData);
 
 	if constexpr (Settings::Debug::bShouldPrintMappingDebugData)
-		std::cout << std::format("MappingGeneration: NumStructsAndClasse = 0x{0:X} (Dec: {0})\n\n", static_cast<uint32>(NumStructsAndClasse));
+		std::wcout << std::format(L"MappingGeneration: NumStructsAndClasse = 0x{0:X} (Dec: {0})\n\n", static_cast<uint32>(NumStructsAndClasse));
 
 	return ReturnBuffer;
 }
@@ -405,8 +405,8 @@ void MappingGenerator::GenerateFileHeader(StreamType& InUsmap, const std::string
 
 	if constexpr (Settings::Debug::bShouldPrintMappingDebugData)
 	{
-		std::cout << std::format("MappingGeneration: CompressedSize = 0x{0:X} (Dec: {0})\n", CompressedSize);
-		std::cout << std::format("MappingGeneration: DecompressedSize = 0x{0:X} (Dec: {0})\n\n", UncompressedSize);
+		std::wcout << std::format(L"MappingGeneration: CompressedSize = 0x{0:X} (Dec: {0})\n", CompressedSize);
+		std::wcout << std::format(L"MappingGeneration: DecompressedSize = 0x{0:X} (Dec: {0})\n\n", UncompressedSize);
 	}
 
 	/* Write compressed size */
@@ -423,7 +423,7 @@ void MappingGenerator::Generate()
 {
 	NameCounter = 0x0;
 
-	std::string MappingsFileName = (Settings::Generator::GameVersion + '-' + Settings::Generator::GameName + ".usmap");
+	std::wstring MappingsFileName = (Settings::Generator::GameVersion + L'-' + Settings::Generator::GameName + L".usmap");
 
 	FileNameHelper::MakeValidFileName(MappingsFileName);
 

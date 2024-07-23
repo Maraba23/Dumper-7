@@ -4,39 +4,39 @@
 #include "NameArray.h"
 
 
-std::string MakeNameValid(std::string&& Name)
+std::wstring MakeNameValid(std::wstring&& Name)
 {
-	static constexpr const char* Numbers[10] =
+	static constexpr const wchar_t* Numbers[10] =
 	{
-		"Zero",
-		"One",
-		"Two",
-		"Three",
-		"Four",
-		"Five",
-		"Six",
-		"Seven",
-		"Eight",
-		"Nine"
+		L"Zero",
+		L"One",
+		L"Two",
+		L"Three",
+		L"Four",
+		L"Five",
+		L"Six",
+		L"Seven",
+		L"Eight",
+		L"Nine"
 	};
 
-	if (Name == "bool")
-		return "Bool";
+	if (Name == L"bool")
+		return L"Bool";
 
-	if (Name == "TRUE")
-		return "TURR";
+	if (Name == L"TRUE")
+		return L"TURR";
 
-	if (Name == "FALSE")
-		return "FLASE";
+	if (Name == L"FALSE")
+		return L"FLASE";
 
-	if (Name == "NULL")
-		return "NULLL";
+	if (Name == L"NULL")
+		return L"NULLL";
 
-	if (Name[0] <= '9' && Name[0] >= '0')
+	if (Name[0] <= L'9' && Name[0] >= L'0')
 	{
-		Name.replace(0, 1, Numbers[Name[0] - '0']);
+		Name.replace(0, 1, Numbers[Name[0] - L'0']);
 	}
-	else if ((Name[0] <= 'z' && Name[0] >= 'a') && Name[0] != 'b')
+	else if ((Name[0] <= L'z' && Name[0] >= L'a') && Name[0] != L'b')
 	{
 		Name[0] -= 0x20;
 	}
@@ -46,16 +46,16 @@ std::string MakeNameValid(std::string&& Name)
 		switch (Name[i])
 		{
 		case '+':
-			Name.replace(i, 1, "Plus");
+			Name.replace(i, 1, L"Plus");
 			continue;
 		case '-':
-			Name.replace(i, 1, "Minus");
+			Name.replace(i, 1, L"Minus");
 			continue;
 		case '*':
-			Name.replace(i, 1, "Star");
+			Name.replace(i, 1, L"Star");
 			continue;
 		case '/':
-			Name.replace(i, 1, "Slash");
+			Name.replace(i, 1, L"Slash");
 			continue;
 		default:
 			break;
@@ -63,9 +63,9 @@ std::string MakeNameValid(std::string&& Name)
 
 		char c = Name[i];
 
-		if (c != '_' && !((c <= 'z' && c >= 'a') || (c <= 'Z' && c >= 'A') || (c <= '9' && c >= '0')))
+		if (c != L'_' && !((c <= L'z' && c >= L'a') || (c <= L'Z' && c >= L'A') || (c <= L'9' && c >= L'0')))
 		{
-			Name[i] = '_';
+			Name[i] = L'_';
 		}
 	}
 
@@ -90,7 +90,7 @@ void FName::Init(bool bForceGNames)
 		"48 8D ? ? ? 48 8B ? E8",
 	};
 
-	MemAddress StringRef = FindByStringInAllSections("ForwardShadingQuality_");
+	MemAddress StringRef = FindByStringInAllSections(L"ForwardShadingQuality_");
 
 	int i = 0;
 	while (!AppendString && i < PossibleSigs.size())
@@ -108,14 +108,14 @@ void FName::Init(bool bForceGNames)
 
 		if (bInitializedSuccessfully)
 		{
-			ToStr = [](const void* Name) -> std::string
+			ToStr = [](const void* Name) -> std::wstring
 			{
 				if (!Settings::Internal::bUseUoutlineNumberName)
 				{
 					const int32 Number = FName(Name).GetNumber();
 
 					if (Number > 0)
-						return NameArray::GetNameEntry(Name).GetString() + "_" + std::to_string(Number - 1);
+						return NameArray::GetNameEntry(Name).GetString() + L"_" + std::to_wstring(Number - 1);
 				}
 
 				return NameArray::GetNameEntry(Name).GetString();
@@ -134,15 +134,15 @@ void FName::Init(bool bForceGNames)
 	/* Initialize GNames offset without committing to use GNames during the dumping process or in the SDK */
 	NameArray::SetGNamesWithoutCommiting();
 
-	std::cout << std::format("Found FName::{} at Offset 0x{:X}\n\n", (Off::InSDK::Name::bIsUsingAppendStringOverToString ? "AppendString" : "ToString"), Off::InSDK::Name::AppendNameToString);
+	std::wcout << std::format(L"Found FName::{} at Offset 0x{:X}\n\n", (Off::InSDK::Name::bIsUsingAppendStringOverToString ? L"AppendString" : L"ToString"), Off::InSDK::Name::AppendNameToString);
 
-	ToStr = [](const void* Name) -> std::string
+	ToStr = [](const void* Name) -> std::wstring
 	{
 		thread_local FFreableString TempString(1024);
 
 		AppendString(Name, TempString);
 
-		std::string OutputString = TempString.ToString();
+		std::wstring OutputString = TempString.ToString();
 		TempString.ResetNum();
 
 		return OutputString;
@@ -157,14 +157,14 @@ void FName::Init(int32 OverrideOffset, EOffsetOverrideType OverrideType, bool bI
 
 		if (bInitializedSuccessfully)
 		{
-			ToStr = [](const void* Name) -> std::string
+			ToStr = [](const void* Name) -> std::wstring
 			{
 				if (!Settings::Internal::bUseUoutlineNumberName)
 				{
 					const int32 Number = FName(Name).GetNumber();
 
 					if (Number > 0)
-						return NameArray::GetNameEntry(Name).GetString() + "_" + std::to_string(Number - 1);
+						return NameArray::GetNameEntry(Name).GetString() + L"_" + std::to_wstring(Number - 1);
 				}
 
 				return NameArray::GetNameEntry(Name).GetString();
@@ -179,26 +179,26 @@ void FName::Init(int32 OverrideOffset, EOffsetOverrideType OverrideType, bool bI
 	Off::InSDK::Name::AppendNameToString = OverrideOffset;
 	Off::InSDK::Name::bIsUsingAppendStringOverToString = OverrideType == EOffsetOverrideType::AppendString;
 
-	ToStr = [](const void* Name) -> std::string
+	ToStr = [](const void* Name) -> std::wstring
 	{
 		thread_local FFreableString TempString(1024);
 
 		AppendString(Name, TempString);
 
-		std::string OutputString = TempString.ToString();
+		std::wstring OutputString = TempString.ToString();
 		TempString.ResetNum();
 
 		return OutputString;
 	};
 
-	std::cout << std::format("Manual-Override: FName::{} --> Offset 0x{:X}\n\n", (Off::InSDK::Name::bIsUsingAppendStringOverToString ? "AppendString" : "ToString"), Off::InSDK::Name::AppendNameToString);
+	std::wcout << std::format(L"Manual-Override: FName::{} --> Offset 0x{:X}\n\n", (Off::InSDK::Name::bIsUsingAppendStringOverToString ? L"AppendString" : L"ToString"), Off::InSDK::Name::AppendNameToString);
 }
 
 void FName::InitFallback()
 {
 	Off::InSDK::Name::bIsUsingAppendStringOverToString = false;
 
-	MemAddress Conv_NameToStringAddress = FindUnrealExecFunctionByString("Conv_NameToString");
+	MemAddress Conv_NameToStringAddress = FindUnrealExecFunctionByString(L"Conv_NameToString");
 
 	constexpr std::array<const char*, 3> PossibleSigs =
 	{
@@ -218,30 +218,30 @@ void FName::InitFallback()
 	Off::InSDK::Name::AppendNameToString = AppendString ? GetOffset(AppendString) : 0x0;
 }
 
-std::string FName::ToString() const
+std::wstring FName::ToString() const
 {
 	if (!Address)
-		return "None";
+		return L"None";
 
-	std::string OutputString = ToStr(Address);
+	std::wstring OutputString = ToStr(Address);
 
 	size_t pos = OutputString.rfind('/');
 
-	if (pos == std::string::npos)
+	if (pos == std::wstring::npos)
 		return OutputString;
 
 	return OutputString.substr(pos + 1);
 }
 
-std::string FName::ToRawString() const
+std::wstring FName::ToRawString() const
 {
 	if (!Address)
-		return "None";
+		return L"None";
 
 	return ToStr(Address);
 }
 
-std::string FName::ToValidString() const
+std::wstring FName::ToValidString() const
 {
 	return MakeNameValid(ToString());
 }
@@ -266,7 +266,7 @@ bool FName::operator!=(FName Other) const
 	return GetCompIdx() != Other.GetCompIdx();
 }
 
-std::string FName::CompIdxToString(int CmpIdx)
+std::wstring FName::CompIdxToString(int CmpIdx)
 {
 	if (!Settings::Internal::bUseCasePreservingName)
 	{

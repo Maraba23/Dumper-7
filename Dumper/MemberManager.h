@@ -216,27 +216,27 @@ public:
 		PredefinedMemberLookup = Lookup;
 	}
 
-	/* Add special names like "Class", "Flags, "Parms", etc. to avoid collisions on them */
+	/* Add special names like "Class", L"Flags, L"Parms", etc. to avoid collisions on them */
 	static inline void InitReservedNames()
 	{
 		/* UObject reserved names */
-		MemberNames.AddReservedName("Flags", false);
-		MemberNames.AddReservedName("Index", false);
-		MemberNames.AddReservedName("Class", false);
-		MemberNames.AddReservedName("Name", false);
-		MemberNames.AddReservedName("Outer", false);
+		MemberNames.AddReservedName(L"Flags", false);
+		MemberNames.AddReservedName(L"Index", false);
+		MemberNames.AddReservedName(L"Class", false);
+		MemberNames.AddReservedName(L"Name", false);
+		MemberNames.AddReservedName(L"Outer", false);
 
 		/* UFunction reserved names */
-		MemberNames.AddReservedName("FunctionFlags", false);
+		MemberNames.AddReservedName(L"FunctionFlags", false);
 
 		/* Function-body reserved names */
-		MemberNames.AddReservedName("Func", true);
-		MemberNames.AddReservedName("Parms", true);
-		MemberNames.AddReservedName("Params", true);
-		MemberNames.AddReservedName("Flgs", true);
+		MemberNames.AddReservedName(L"Func", true);
+		MemberNames.AddReservedName(L"Parms", true);
+		MemberNames.AddReservedName(L"Params", true);
+		MemberNames.AddReservedName(L"Flgs", true);
 
-		MemberNames.AddReservedName("IN", true);
-		MemberNames.AddReservedName("OUT", true);
+		MemberNames.AddReservedName(L"IN", true);
+		MemberNames.AddReservedName(L"OUT", true);
 	}
 
 	static inline void Init()
@@ -269,7 +269,7 @@ public:
 	template<typename UEType>
 	static inline NameInfo GetNameCollisionInfo(UEStruct Struct, UEType Member)
 	{
-		static_assert(std::is_same_v<UEType, UEProperty> || std::is_same_v<UEType, UEFunction>, "Type arguement in 'GetNameCollisionInfo' is of invalid type!");
+		static_assert(std::is_same_v<UEType, UEProperty> || std::is_same_v<UEType, UEFunction>, L"Type arguement in 'GetNameCollisionInfo' is of invalid type!");
 
 		assert(Struct && "'GetNameCollisionInfo()' called with 'Struct' == nullptr");
 		assert(Member && "'GetNameCollisionInfo()' called with 'Member' == nullptr");
@@ -277,7 +277,7 @@ public:
 		return MemberNames.GetNameCollisionInfoUnchecked(Struct, Member);
 	}
 
-	static inline std::string StringifyName(UEStruct Struct, NameInfo Name)
+	static inline std::wstring StringifyName(UEStruct Struct, NameInfo Name)
 	{
 		return MemberNames.StringifyName(Struct, Name);
 	}

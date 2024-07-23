@@ -32,13 +32,13 @@ public:
     UEStruct GetUnrealStruct() const;
 
 public:
-    std::string GetName() const;
-    std::string GetRawName() const;
-    std::string GetFullName() const;
+    std::wstring GetName() const;
+    std::wstring GetRawName() const;
+    std::wstring GetFullName() const;
     StructWrapper GetSuper() const;
 
     /* Name, bIsUnique */
-    std::pair<std::string, bool> GetUniqueName() const;
+    std::pair<std::wstring, bool> GetUniqueName() const;
     int32 GetLastMemberEnd() const;
     int32 GetAlignment() const;
     int32 GetSize() const;
@@ -60,7 +60,7 @@ public:
     bool IsCyclicWithPackage(int32 PackageIndex) const;
 
     bool HasCustomTemplateText() const;
-    std::string GetCustomTemplateText() const;
+    std::wstring GetCustomTemplateText() const;
 
     MemberManager GetMembers() const;
 };
